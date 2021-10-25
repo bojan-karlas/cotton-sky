@@ -1,0 +1,31 @@
+<div>
+
+    {{ $alt := (print .Name) }}
+    {{ with .thumbnail }}
+
+        {{- $img := resources.GetMatch . -}}
+        {{- if not $img -}}
+            {{- $img = resources.Get . -}}
+        {{- end -}}
+
+        {{ with $img }}
+            {{- $resizedImg := .Fit "250x250" -}}
+            {{- $resizedImgWebp := .Fit "250x250 webp picture" -}}
+
+            <aside>
+                <picture>
+                    <source srcset="{{ $resizedImgWebp.Permalink }}" type="image/webp" />
+                    <img src="{{ $resizedImg.Permalink }}" style="max-width: 8em; max-height: 4em;" alt="{{ $alt }}" loading="lazy" decoding="async">
+                </picture>
+                <!-- <img src="{{ . }}" style="max-height: 4em;" alt="{{ $alt }}"> -->
+            </aside>
+        {{ end }}
+    {{ end }}
+
+    <b>{{ .title }}</b><br>
+
+    {{ delimit .details " / " }} / {{ .place }}
+
+    {{ with .summary }}<br><em>{{ . }}</em>{{ end }}
+
+</div>

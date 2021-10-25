@@ -1,0 +1,2 @@
+{{ $scripts := resources.Match "/js/scripts/*.js" | resources.Concat "/js/scripts.js" | minify | fingerprint }}
+<script src="{{ $scripts.Permalink }}"></script>

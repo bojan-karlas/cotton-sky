@@ -1,0 +1,53 @@
+<div>
+
+    {{ $alt := (print .name) }}
+    {{ with .thumbnail }}
+
+        {{ $img := resources.Get . }}
+        
+        {{ with $img }}
+            {{- $resizedImg := .Fill "360x216 Top" -}}
+            {{- $resizedImgWebp := .Fill "360x216 Top webp picture" -}}
+            <aside>
+                <picture>
+                    <source srcset="{{ $resizedImgWebp.Permalink }}" type="image/webp" />
+                    <img src="{{ $resizedImg.Permalink }}" style="max-width: 8em;" alt="{{ $alt }}" loading="lazy" decoding="async">
+                </picture>
+            </aside>
+        {{ end }}
+    {{ end }}
+
+    <b>{{ .title }}</b><br>
+    
+    {{ delimit .authors ", <wbr>" }}<br>
+
+    <em>
+        {{ $shorthand := delimit (slice .venueShort .venueTrack) " " }}
+        {{ with .venueShort }}<b>[{{ trim $shorthand " " }}]</b>{{ end }}
+        {{ .venueLong }}
+    </em>
+
+    {{ with .abstract }}
+        <details>
+            <summary>Abstract</summary>
+            <p>{{ . | markdownify }}</p>
+        </details>
+    {{ end }}
+    
+    <nav class="noprint">
+        <ul>
+            {{ range $key, $value := .Links }}
+                <li>
+                <strong><a href="{{ $value }}">{{ $key }}</a></strong>
+                </li>
+            {{ end }}
+            {{ with .bibTeX }}
+                <li>
+                <strong><a onclick="copyToClipboard('{{ . }}')" title="Copy to clipboard" clickmessage="Copied!">BibTeX</a></strong>
+                </li>
+            {{ end }}
+            <li><q></q></li>
+        </ul>
+    </nav>
+
+</div>

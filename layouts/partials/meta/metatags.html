@@ -1,0 +1,81 @@
+<!-- Open Graph -->
+
+<meta name="description" content="{{ with .Summary }}{{ . | plainify }}{{ else }}{{if .IsPage}}{{ .Summary | plainify }}{{ else }}{{ with .Site.Params.summary }}{{ . | plainify }}{{ end }}{{ end }}{{ end }}" />
+
+<meta property="og:title" content="{{ .Title }}" />
+<meta property="og:description" content="{{ with .Summary }}{{ . | plainify }}{{ else }}{{if .IsPage}}{{ .Summary | plainify }}{{ else }}{{ with .Site.Params.summary }}{{ . | plainify }}{{ end }}{{ end }}{{ end }}" />
+<meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}" />
+<meta property="og:url" content="{{ .Permalink }}" />
+
+{{ if isset .Params "thumbnail" }}
+  {{- $img := .Resources.GetMatch .Params.thumbnail -}}
+  {{- if (ne .Parent nil) -}}
+    {{- $img = cond (ne $img nil) $img (cond (and (isset . "Parent") (ne .Parent nil) (isset .Parent "Resources") (ne .Parent.Resources nil)) (.Parent.Resources.GetMatch .Params.thumbnail) nil) -}}
+  {{- end -}}
+  {{- $img = cond (ne $img nil) $img (resources.Get .Params.thumbnail) -}}
+  {{- if (ne $img nil) -}}
+    <meta property="og:image" content="{{ $img.Permalink }}" />
+  {{- end -}}
+{{ end }}
+
+
+{{- if .IsPage }}
+
+  {{- $iso8601 := "2006-01-02T15:04:05-07:00" -}}
+  <meta property="article:section" content="{{ .Section }}" />
+  {{ with .PublishDate }}<meta property="article:published_time" content="{{ .Format $iso8601 }}" />{{ end }}
+  {{ with .Lastmod }}<meta property="article:modified_time" content="{{ .Format $iso8601 }}" />{{ end }}
+
+  {{- range .Site.Authors }}
+    {{ with .Social.facebook }}<meta property="article:author" content="https://www.facebook.com/{{ . }}" />{{ end }}
+  {{- end -}}
+  {{ with .Site.Social.facebook }}<meta property="article:publisher" content="https://www.facebook.com/{{ . }}" />{{ end }}
+
+  {{- with .Params.tags -}}
+    {{ range first 6 . }}<meta property="article:tag" content="{{ . }}" />{{ end }}
+  {{- end -}}
+
+{{- end -}}
+
+{{- with .Params.audio }}<meta property="og:audio" content="{{ . }}" />{{ end }}
+{{- with .Params.locale }}<meta property="og:locale" content="{{ . }}" />{{ end }}
+{{- with .Site.Params.title }}<meta property="og:site_name" content="{{ . }}" />{{ end }}
+{{- with .Params.videos }}{{- range . }}
+  <meta property="og:video" content="{{ . | absURL }}" />
+{{ end }}{{ end }}
+
+{{- if isset .Params "recommended" -}}
+  {{- $permalink := .Permalink }}
+  {{- $site := .Site -}}
+  {{- range $page := .Params.recommended -}}
+    {{- $page = $site.GetPage $page -}}
+    {{- if ne $page.Permalink $permalink -}}<meta property="og:see_also" content="{{ $page.Permalink }}" />{{- end -}}
+  {{- end -}}
+{{- end -}}
+
+<!-- Twitter Cards -->
+
+{{ if isset .Params "thumbnail" }}
+  {{- $img := .Resources.GetMatch .Params.thumbnail -}}
+  {{- if (ne .Parent nil) -}}
+    {{- $img = cond (ne $img nil) $img (cond (and (isset . "Parent") (ne .Parent nil) (isset .Parent "Resources") (ne .Parent.Resources nil)) (.Parent.Resources.GetMatch .Params.thumbnail) nil) -}}
+  {{- end -}}
+  {{- $img = cond (ne $img nil) $img (resources.Get .Params.thumbnail) -}}
+  {{- if (ne $img nil) -}}
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:image" content="{{ $img.Permalink }}"/>
+  {{- else -}}
+    <meta name="twitter:card" content="summary"/>
+  {{- end -}}
+{{ end }}
+
+{{- with .Title -}}<meta name="twitter:title" content="{{ . }}"/>{{- end -}}
+<meta name="twitter:description" content="{{ with .Summary }}{{ . | plainify }}{{ else }}{{if .IsPage}}{{ .Summary | plainify }}{{ else }}{{ with .Site.Params.summary }}{{ . | plainify }}{{ end }}{{ end }}{{ end -}}"/>
+{{- with .Site.Social.twitter -}}
+  <meta name="twitter:site" content="@{{ . }}"/>
+{{- end -}}
+{{ range .Site.Authors }}
+  {{ with .twitter -}}
+    <meta name="twitter:creator" content="@{{ . }}"/>
+  {{ end -}}
+{{ end -}}

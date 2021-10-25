@@ -1,0 +1,46 @@
+{{ $content := .content }}
+{{ $params := .params }}
+
+{{ $dates := slice }}
+
+{{ range $content }}
+
+    {{ $item := . }}
+    {{ $header := "" }}
+
+    {{ with $params.header }}
+
+        {{ with .param }}{{ $header = $item.Param . }}{{ end }}
+        {{ with .field }}{{ $header = index $item . }}{{ end }}
+
+    {{ end }}
+
+    {{ if (and (isset $params "grouped" ) (eq $params.grouped true) ) }}
+        {{ if not (in $dates $header ) }}
+            {{ $dates = append $dates (slice $header) }}
+        {{ else }}
+            {{ $header = "" }}
+        {{ end }}
+    {{ end }}
+
+    {{ if $header }}
+        <h3>{{ $header }}</h3>
+    {{ end }}
+
+    
+
+    {{ $value              := . }}
+    {{ $type               := (printf "%T" $value) }}
+    {{ $typeIsPage         := (findRE "Page|pageState" $type) }}
+
+    {{ $itemtype := "page" }}
+    {{ if $typeIsPage }}
+        {{ with .Params.type }}{{ $itemtype = . }}{{ end }}
+    {{ else }}
+        {{ with .type }}{{ $itemtype = . }}{{ end }}
+    {{ end }}
+
+
+    {{ partial ( printf "listitems/%s" ( lower $itemtype ) ) . }}
+
+{{ end }}

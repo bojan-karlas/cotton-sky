@@ -1,0 +1,21 @@
+{{ define "main" }}
+    {{ .Content }}
+
+    {{ if isset .Params "recommended" }}
+        <h2>Recommended</h2>
+        {{ $pages := slice }}
+        {{ $site := .Site}}
+        {{ range $page := .Params.recommended }}
+        {{ $page = $site.GetPage $page }}
+        {{ $pages = $pages | append $page }}
+        {{ end }}
+        {{ partial "sections/carouselpreview" $pages }}
+    {{ end }}
+
+    {{ if isset .Params "tweet" }}
+        <h2>Comments</h2>
+        {{ partial "elements/comments" . }}
+        <br>
+        <nav><strong><a href="{{ .Params.tweet }}" target="_blank">Tweet a Comment</a></strong></nav>
+    {{ end }}
+{{ end }}

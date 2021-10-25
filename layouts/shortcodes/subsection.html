@@ -1,0 +1,6 @@
+<section>
+    {{ $file := .Get 0 }}
+    <!-- {{ $file }} -->
+    <!-- {{ $file | readFile | replaceRE "^---[\\s\\S]+?---" "" | markdownify }} -->
+    {{ with .Site.GetPage "/bio/personal.md" }}{{ .Content }}{{end}}
+</section>

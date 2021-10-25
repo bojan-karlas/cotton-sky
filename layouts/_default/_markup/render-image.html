@@ -1,0 +1,28 @@
+<picture>
+
+    {{- $dest := .Destination -}}
+    {{- $alt := .Text -}}
+    {{- $title := .Title -}}
+
+    {{- $img := resources.GetMatch .Destination -}}
+    {{- if not $img -}}
+        {{- $img = resources.Get .Destination -}}
+    {{- end -}}
+    {{- if not $img -}}
+        {{- $img = .Page.Resources.GetMatch .Destination -}}
+    {{- end -}}
+
+    {{- if $img -}}
+        {{ $size := printf "%dx%d" $img.Width $img.Height }}
+        {{ $resizedImg := printf "%s" $size | $img.Resize }}
+        {{ $resizedImgWebp := printf "%s webp picture" $size | $img.Resize }}
+
+        <picture>
+            <source srcset="{{ $resizedImgWebp.Permalink }}" type="image/webp" />
+            <img src="{{ $resizedImg.Permalink }}" alt="{{ $alt }}" {{ with $title}} title="{{ . }}"{{ end }} loading="lazy" decoding="async">
+        </picture>
+
+    {{- else -}}
+        <img src="{{ $dest | safeURL }}" alt="{{ $alt }}" {{ with $title}} title="{{ . }}"{{ end }} loading="lazy" decoding="async"/>
+    {{- end -}}
+</picture>

@@ -1,0 +1,9 @@
+{{ $cssFileNames := slice "/css/fonts.css" "/css/style.css" "/css/syntax.css" "/css/colors.css" }}
+{{ $cssFiles := slice }}
+{{ range $cssFileNames }}
+    {{ $cssFiles = $cssFiles | append (resources.GetMatch . ) }}
+{{ end }}
+{{ $cssMain := $cssFiles | resources.Concat "/css/main.css" | minify | fingerprint }}
+<link rel="preload" href="{{ $cssMain.RelPermalink }}" integrity="{{ $cssMain.Data.Integrity }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="{{ $cssMain.RelPermalink }}" integrity="{{ $cssMain.Data.Integrity }}"></noscript>
+

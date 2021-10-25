@@ -1,0 +1,49 @@
+{{ $pages := . }}
+{{ if not (reflect.IsSlice . ) }}
+    {{ $pages = .Pages }}
+{{ end }}
+
+<div class="glide">
+    <div class="glide__track" data-glide-el="track">
+        <div class="glide__slides">
+            {{ range $pages }}
+                <div class="carouselcontent">
+
+                    <div>
+                        
+                        
+                            <b>{{ .Title }}</b>
+                            {{with .Summary }}<em>{{ . }}</em>{{ end }}
+                            
+                            <nav class="noprint">
+                                <ul>
+                                    <li>
+                                        <strong><a href="{{ .Permalink }}">Read More</a></strong>
+                                    </li>
+                                </ul>
+                            </nav>
+                    </div>
+
+                    {{ if isset .Params "thumbnail" }}
+                    {{- $img := .Resources.GetMatch .Params.thumbnail -}}
+                    {{- $img = cond (ne $img nil) $img (cond (and (ne .Parent nil) (ne .Parent.Resources nil)) (.Parent.Resources.GetMatch .Params.thumbnail) nil) -}}
+                    {{- $img = cond (ne $img nil) $img (resources.Get .Params.thumbnail) -}}
+                    {{- if (ne $img nil) -}}
+                        {{- $resizedImg := $img.Fit "150x150" -}}
+                        <img src="{{ $resizedImg.Permalink }}" alt="">
+                    {{- end -}}
+                    {{ end }}
+
+                </div>
+            {{ end }}
+        </div>
+    </div>
+    <div class="glide__bullets carouselbullets" data-glide-el="controls[nav]">
+        {{ range $index, $element := $pages }}
+        <a class="glide__bullet" data-glide-dir="={{ $index }}"><i class="fas fa-circle"></i></a>
+        {{ end }}
+
+        <a class="glide__arrow glide__arrow--left" data-glide-dir="<"><i class="fas fa-chevron-circle-left"></i></a>
+        <a class="glide__arrow glide__arrow--right" data-glide-dir=">"><i class="fas fa-chevron-circle-right"></i></a>
+      </div>
+</div>

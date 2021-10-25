@@ -1,0 +1,106 @@
+<header>
+
+    {{ if isset .Params "thumbnail" }}
+        {{- $img := .Resources.GetMatch .Params.thumbnail -}}
+        {{- if not $img -}}
+            {{- $img = resources.Get .Params.thumbnail -}}
+        {{- end -}}
+
+        {{- if $img -}}
+
+            {{- $resizedImg := $img.Fit "250x250" -}}
+            {{- $resizedImgWebp := $img.Fit "250x250 webp picture" -}}
+
+            <aside>
+
+                {{ if .Params.thumbnailClickable }}
+                    <a href="{{ $img.Permalink }}" target="_blank">
+                {{ end }}
+                
+                <picture>
+                    <source srcset="{{ $resizedImgWebp.Permalink }}" type="image/webp" />
+                    <img src="{{ $resizedImg.Permalink }}" style="max-height: 10em; max-width: 250px" alt="{{ .Params.thumbnailAlt }}" loading="lazy" decoding="async">
+                </picture>
+
+                {{ if .Params.thumbnailClickable }}
+                    </a>
+                {{ end }}
+
+            </aside>
+
+        {{- end -}}
+    {{ end }}
+
+    <h1>
+        {{- .Title -}}
+        {{ if isset .Params "subtitle" }}
+        <wbr /><sub>/ {{ .Params.subtitle }}</sub>
+        {{ end }}
+    </h1>
+
+    {{ if isset .Params "summary" }}
+        <blockquote>
+            {{ .Params.summary | .Page.RenderString (dict "display" "block") }}
+        </blockquote>
+    {{ end }}
+
+    {{ $shareable := or (isset .Params "shareable") (and (eq .Section "blog") .IsPage) }}
+
+    {{ if or (isset .Params "links") $shareable }}
+        <nav><ul>
+            {{ range $link := .Params.links }}
+
+                {{ if (and (isset $link "print") (not $link.print)) }}<li class="noprint">
+                {{ else if (and (isset $link "hidden") ( $link.hidden)) }}<li class="hidden">
+                {{ else }}<li>
+                {{ end }}
+                
+                {{ if $link.large }}<em>{{ end }}
+
+                <a href="{{ $link.href }}" title="{{ $link.title }}">
+                    {{ if isset $link "icon" }}
+                        <i class="fa {{ $link.icon }}" aria-hidden="true"></i>
+                    {{end}}
+                </a>
+
+                {{ if $link.large }}</em>{{ end }}
+
+                </li>
+
+            {{ end }}
+            
+            {{ if $shareable }}
+
+                <li>
+                    <a title="Share" onclick="shareOrToggleHidden('.btn-share-link', '{{ .Title }}', '{{ .Permalink | absURL }}')" onblur="ensureHidden('.btn-share-link')">
+                        <em><i class="fas fa-share-square"></i></em>
+                    </a>
+                </li>
+
+                <li class="btn-share-link hidden">
+                    <a href="https://twitter.com/intent/tweet?text={{ .Permalink | absURL }}" target="_blank" title="Share on Twitter">
+                        <em><i class="fa fa-twitter"></i></em>
+                    </a>
+                </li>
+                
+                <li class="btn-share-link hidden">
+                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ .Permalink | absURL }}" target="_blank" title="Share on Facebook">
+                        <em><i class="fab fa-facebook"></i></em>
+                    </a>
+                </li>
+
+                <li class="btn-share-link hidden">
+                    <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ .Permalink | absURL }}" target="_blank" title="Share on LinkedIn">
+                        <em><i class="fab fa-linkedin-in"></i></em>
+                    </a>
+                </li>
+
+            {{ end }}
+
+            <li><q></q></li>
+        </ul></nav>
+    {{ end }}
+
+    <hr>
+
+</header>

@@ -1,0 +1,29 @@
+name = "Cotton Sky"
+license = "MIT"
+licenselink = "https://github.com/bojan-karlas/cotton-sky/blob/main/LICENSE"
+description = "A minimal plain responsive Hugo theme for academic personal pages and blogs."
+homepage = "https://bojan.ninja/"
+tags = [
+  "responsive",
+  "simple",
+  "clean",
+  "light",
+  "dark",
+  "blog",
+  "minimalist"
+]
+features = [
+  "responsive",
+  "single-column",
+  "blog",
+  "cover-image",
+  "table-of-contents",
+  "opengraph",
+  "favicon",
+  "share-icons"
+]
+min_version = "0.88.0"
+
+[author]
+  name = "Bojan Karlaš"
+  homepage = "https://bojan.ninja/"

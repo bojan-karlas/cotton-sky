@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Bitter&family=Calistoga&family=Roboto+Mono&display=swap');
+
+body {
+    font-family: 'Bitter', serif;
+}
+
+h1, h2, h3 {
+    font-family: 'Calistoga', serif;
+}
+
+code {
+    font-family: "Roboto Mono";
+}
+

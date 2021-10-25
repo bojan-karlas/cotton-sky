@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {{- partial "meta/head.html" . -}}
+        {{- block "head" . }}{{- end }}
+    </head>
+    <body>
+        <header>
+            {{- partial "elements/header.html" . -}}
+        </header>
+        <main>
+            <aside class="right">
+                <nav class="js-toc"></nav>
+            </aside>
+
+            {{- partial "elements/title.html" . -}}
+            
+            {{- block "main" . }}{{- end }}
+        </main>
+        <footer>
+            {{- partial "elements/footer.html" . -}}
+        </footer>
+    </body>
+</html>

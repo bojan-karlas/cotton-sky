@@ -1,0 +1,17 @@
+{{ $resource := .Resources.GetMatch (printf "%s.comments.json" .File.TranslationBaseName) }}
+{{ if ne $resource nil }}
+    {{ $data := getJSON "content" $resource.RelPermalink }}
+    {{ range $comment := $data }}
+        <div class="comment">
+            
+            <a href="https://twitter.com/{{$comment.username}}"><img src="{{ $comment.img }}" alt="" style="max-height: 32px;"></a>
+            <b><a href="https://twitter.com/{{$comment.username}}">{{ $comment.name }}</a></b><small><q> / {{ dateFormat "Jan 2, 2006" $comment.time }}</q></small>
+            <p>{{ $comment.text }}</p>
+        </div>
+        
+    {{ end }}
+{{ else }}
+    <div class="comment">
+        <p>No comments yet...</p>
+    </div>
+{{ end }}

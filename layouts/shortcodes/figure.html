@@ -1,0 +1,44 @@
+
+{{ if .Get "aside" }}
+<aside>
+{{ end }}
+
+    <figure>
+        {{ $src := .Get "src" }}
+        {{ $alt := .Get "alt" }}
+        {{ $size := .Get "size" }}
+
+        {{ $img := resources.Get $src }}
+        {{- if not $img -}}
+            {{- $img = resources.Get $src -}}
+        {{- end -}}
+        {{- if not $img -}}
+            {{- $img = .Page.Resources.GetMatch $src -}}
+        {{- end -}}
+
+        {{ with $img }}
+
+            {{ if (not $size) }}
+                {{ $size = printf "%dx%d" .Width .Height }}
+            {{ end }}
+
+            {{ $resizedImg := printf "%s" $size | .Resize }}
+            {{ $resizedImgWebp := printf "%s webp picture" $size | .Resize }}
+
+            <picture>
+                <source srcset="{{ $resizedImgWebp.Permalink }}" type="image/webp" />
+                <img src="{{ $resizedImg.Permalink }}" alt="{{ $alt }}" loading="lazy" decoding="async">
+            </picture>
+
+        {{ end }}
+        <figcaption>
+            {{ with .Get "icon" }}
+                <i class="{{ . }}" aria-hidden="true"></i>
+            {{ end }}
+            {{ .Inner | .Page.RenderString }}
+        </figcaption>
+    </figure>
+
+{{ if .Get "aside" }}
+</aside>
+{{ end }}
