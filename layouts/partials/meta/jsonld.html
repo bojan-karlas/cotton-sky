@@ -12,7 +12,9 @@
     {{ if not $img }}
         {{ $img = resources.Get .Params.thumbnail }}
     {{ end }}
-    {{ $thumbnail = $img.Permalink }}
+    {{ if $img }}
+        {{ $thumbnail = $img.Permalink }}
+    {{ end }}
 {{ end }}
 {{ $vars.Set "image" $thumbnail }}
 

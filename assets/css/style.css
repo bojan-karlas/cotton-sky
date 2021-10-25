@@ -291,6 +291,7 @@ main nav ul {
 
 main>header nav em {
     font-size: 2em;
+    font-style: normal;
 }
 
 main>header nav ul>li {
@@ -303,10 +304,12 @@ main>header nav ul>li:first-child {
 main>header nav a {
     /* padding: 0.75em; */
     font-weight: bold;
+    text-decoration: none;
 }
 
 main nav a:hover {
     color: var(--color-primary);
+    text-decoration: none;
 }
 
 main nav ul {

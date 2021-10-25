@@ -57,10 +57,11 @@
                 
                 {{ if $link.large }}<em>{{ end }}
 
-                <a href="{{ $link.href }}" title="{{ $link.title }}">
+                <a href="{{ $link.href }}" {{ with $link.title }}title="{{ . }}"{{ end }} {{ if $link.newtab }}target="_blank"{{ end }} >
                     {{ if isset $link "icon" }}
                         <i class="fa {{ $link.icon }}" aria-hidden="true"></i>
                     {{end}}
+                    {{ with $link.label }}<span>{{.}}</span>{{ end }}
                 </a>
 
                 {{ if $link.large }}</em>{{ end }}
