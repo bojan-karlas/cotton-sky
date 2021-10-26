@@ -1,0 +1,55 @@
+{{ $value              := . }}
+{{ $type               := (printf "%T" $value) }}
+{{ $typeIsPage         := (findRE "Page|pageState" $type) }}
+
+{{ $item := . }}
+{{ if $typeIsPage }}{{ $item = .Params }}{{ end }}
+
+<div>
+    {{ if isset $item "thumbnail" }}
+        {{- $img := .Resources.GetMatch $item.thumbnail -}}
+        {{- $img = cond (ne $img nil) $img (.Parent.Resources.GetMatch $item.thumbnail) -}}
+        {{- $img = cond (ne $img nil) $img (.Parent.Parent.Resources.GetMatch $item.thumbnail) -}}
+        {{- $img = cond (ne $img nil) $img (resources.Get $item.thumbnail) -}}
+        {{- if (ne $img nil) -}}
+            {{- $resizedImg := $img.Fit "250x250" -}}
+            <img src="{{ $resizedImg.Permalink }}" style="max-height: 10em; max-width: 250px" alt=""><br>
+        {{- end -}}
+    {{ end }}
+
+    <b>{{ $item.title }}</b>
+
+    {{ $details := slice }}
+    {{ with $item.details }}
+        {{ if reflect.IsSlice . }}
+            {{ $details = . }}
+        {{ else }}
+            {{ $details = slice . }}
+        {{ end }}
+    {{ end }}
+    {{ with $item.place }}{{ $details = $details | append . }}{{ end }}
+    {{ if $details }}
+        <br>{{ delimit $details " / " }}
+    {{ end }}
+
+    <nav class="noprint">
+        <ul>
+            {{ with $item.links }}
+                {{ range $link := . }}
+                    <li>
+                    <strong><a href="{{ $link.href }}">
+                        {{ with $link.icon }}
+                            <i class="fa {{ . }}" aria-hidden="true"></i>
+                        {{ end }}
+                        {{ with $link.label }}<span>{{.}}</span>{{ end }}
+                    </a></strong>
+                    </li>
+                {{ end }}
+            {{ end }}
+            <li>
+                <strong><a href="{{ .Permalink }}">Read More</a></strong>
+            </li>
+        </ul>
+    </nav>
+
+</div>

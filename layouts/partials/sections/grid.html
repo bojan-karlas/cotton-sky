@@ -1,0 +1,22 @@
+{{ $content := .content }}
+{{ $params := .params }}
+
+<div class="grid">
+{{ range $content }}
+
+    {{ $value              := . }}
+    {{ $type               := (printf "%T" $value) }}
+    {{ $typeIsPage         := (findRE "Page|pageState" $type) }}
+
+    {{ $itemtype := "page" }}
+    {{ if $typeIsPage }}
+        {{ with .Params.type }}{{ $itemtype = . }}{{ end }}
+    {{ else }}
+        {{ with .type }}{{ $itemtype = . }}{{ end }}
+    {{ end }}
+
+
+    {{ partial ( printf "griditems/%s" ( lower $itemtype ) ) . }}
+
+{{ end }}
+</div>

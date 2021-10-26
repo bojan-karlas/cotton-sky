@@ -457,6 +457,18 @@ details p:last-child {
     margin-bottom: 0.5em;
 }
 
+.grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.grid>div {
+    flex: 0;
+    min-width: 250px;
+}
+
 .glide {
     margin-top: 0;
 }
