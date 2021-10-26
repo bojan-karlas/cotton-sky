@@ -1,14 +1,14 @@
-function toggleHidden(query) {
+function toggleClass(query, className) {
     var elements = document.querySelectorAll(query);
     Array.prototype.forEach.call(elements, function (element) {
-        element.classList.toggle("hidden");
+        element.classList.toggle(className);
     });
 }
 
-function ensureHidden(query) {
+function ensureHasClass(query, className) {
     var elements = document.querySelectorAll(query);
     Array.prototype.forEach.call(elements, function (element) {
-        element.classList.add("hidden");
+        element.classList.add(className);
     });
 }
 
@@ -20,6 +20,14 @@ function shareOrToggleHidden(query, title, url) {
         })
         .catch(console.error);
       } else {
-        toggleHidden(query)
+        toggleClass(query, "hidden")
       }
 }
+
+var elements = document.querySelectorAll("body>header>nav .selected");
+Array.prototype.forEach.call(elements, function (element) {
+  element.addEventListener("click", function(event) {
+    toggleClass('dropdown');
+    event.preventDefault();
+  }, false);
+});

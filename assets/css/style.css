@@ -240,6 +240,7 @@ body>main {
 
 nav ul {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
 }
 
@@ -262,11 +263,16 @@ nav q::after, nav q::before {
     content: "";
 }
 
-body>header>nav ul>li {
-    margin: 0em 1em;
+body>header>nav {
+    align-self: flex-start;
 }
 
-body>header>nav b {
+body>header>nav ul {
+    row-gap: 1em;
+    column-gap: 2em;
+}
+
+body>header>nav .selected {
     border: 1px var(--color-foreground) solid;
     border-radius: 1em;
 }
@@ -287,18 +293,13 @@ main nav ul {
     margin-left: 0;
     margin-block-start: 0;
     margin-block-end: 0;
+    row-gap: 1em;
+    column-gap: 2em;
 }
 
 main>header nav em {
     font-size: 2em;
     font-style: normal;
-}
-
-main>header nav ul>li {
-    margin: 0em 1em 0em 1em;
-}
-main>header nav ul>li:first-child {
-    margin-left: 0em;
 }
 
 main>header nav a {
@@ -604,6 +605,23 @@ details p:last-child {
     body {
         /* font-size: 80%; */
         font-size: 1rem;
+    }
+
+    body>header>nav ul {
+        display: inline-flex;
+        flex-direction: column;
+    }
+
+    /* body>header>nav ul li {
+        overflow: hidden;
+    } */
+
+    body>header>nav :not(ul.dropdown)>:not(.selected) {
+        max-height: 0em;
+    }
+
+    body>header>nav .selected a::after {
+        content: "≡";
     }
 }
 

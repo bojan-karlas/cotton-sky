@@ -2,13 +2,15 @@
     <ul>
         {{ $currentPage := . }}
         {{ range .Site.Menus.main }}
-        <li>
-            {{ if or ($currentPage.IsMenuCurrent "main" .) ($currentPage.HasMenuCurrent "main" .) (eq $currentPage.Section .Pre) }}<b>{{ end }}
-            <a href="{{ .URL }}">
-                {{ print .Name | safeHTML }}
-            </a>
-            {{ if or ($currentPage.IsMenuCurrent "main" .) ($currentPage.HasMenuCurrent "main" .) (eq $currentPage.Section .Pre) }}</b>{{ end }}
-        </li>
+
+            {{ $selected := or ($currentPage.IsMenuCurrent "main" .) ($currentPage.HasMenuCurrent "main" .) (eq $currentPage.Section .Pre) }}
+
+            <li {{ if $selected }}class="selected"{{ end }} >
+                <a href="{{ .URL }}">
+                    {{ print .Name | safeHTML }}
+                </a>
+                {{ if or ($currentPage.IsMenuCurrent "main" .) ($currentPage.HasMenuCurrent "main" .) (eq $currentPage.Section .Pre) }}</b>{{ end }}
+            </li>
         {{ end }}
     </ul>
 </nav>

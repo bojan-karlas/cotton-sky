@@ -73,7 +73,7 @@
             {{ if $shareable }}
 
                 <li>
-                    <a title="Share" onclick="shareOrToggleHidden('.btn-share-link', '{{ .Title }}', '{{ .Permalink | absURL }}')" onblur="ensureHidden('.btn-share-link')">
+                    <a title="Share" onclick="shareOrToggleHidden('.btn-share-link', '{{ .Title }}', '{{ .Permalink | absURL }}')" onblur="ensureHasClass('.btn-share-link', 'hidden')">
                         <em><i class="fas fa-share-square"></i></em>
                     </a>
                 </li>
