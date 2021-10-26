@@ -1,9 +1,11 @@
 <nav>
     <ul>
         {{ $currentPage := . }}
+        {{ $selectedExists := false }}
         {{ range .Site.Menus.main }}
 
             {{ $selected := or ($currentPage.IsMenuCurrent "main" .) ($currentPage.HasMenuCurrent "main" .) (eq $currentPage.Section .Pre) }}
+            {{ $selectedExists = or $selectedExists $selected }}
 
             <li {{ if $selected }}class="selected"{{ end }} >
                 <a href="{{ .URL }}">
@@ -11,6 +13,10 @@
                 </a>
                 {{ if or ($currentPage.IsMenuCurrent "main" .) ($currentPage.HasMenuCurrent "main" .) (eq $currentPage.Section .Pre) }}</b>{{ end }}
             </li>
+        {{ end }}
+
+        {{ if not $selectedExists }}
+            <li class="selected phoneonly" ><a></a></li>
         {{ end }}
     </ul>
 </nav>
