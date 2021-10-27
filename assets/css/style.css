@@ -196,7 +196,7 @@ aside.right * {
 
 body>header {
     font-size: 1.2rem;
-    height: 5em;
+    min-height: 5em;
     max-width: 1200px;
     margin: 0 auto;
 
