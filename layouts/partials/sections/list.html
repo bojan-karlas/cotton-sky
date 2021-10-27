@@ -1,6 +1,19 @@
 {{ $content := .content }}
 {{ $params := .params }}
 
+{{ $sortOrder := "asc" }}
+{{ with $params.sortOrder }}{{ $sortOrder = . }}{{ end }}
+
+{{ with $params.sortBy }}
+    {{ with .param }}
+        {{ $content = $content.ByParam . }}
+        {{ if eq $sortOrder "desc" }}{{ $content = $content.Reverse }}{{ end }}
+    {{ end }}
+    {{ with .field }}
+        {{ $content = sort $content . $sortOrder }}
+    {{ end }}
+{{ end }}
+
 {{ $dates := slice }}
 
 {{ range $content }}
