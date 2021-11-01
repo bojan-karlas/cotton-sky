@@ -14,7 +14,10 @@
     {{ end }}
 {{ end }}
 
-<div class="grid">
+{{ $divClass := "grid" }}
+{{ if $params.small }}{{ $divClass = "grid small" }}{{ end }}
+
+<div class="{{ $divClass }}">
 {{ range $content }}
 
     {{ $value              := . }}
@@ -29,7 +32,7 @@
     {{ end }}
 
 
-    {{ partial ( printf "griditems/%s" ( lower $itemtype ) ) . }}
+    {{ partial ( printf "griditems/%s" ( lower $itemtype ) ) ( dict "content" . "params" $params ) }}
 
 {{ end }}
 </div>
