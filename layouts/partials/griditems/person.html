@@ -17,7 +17,7 @@
         {{- end -}}
     {{ end }}
 
-    <b>{{ $item.title }}</b>
+    <b><a href="{{ .Permalink }}">{{ $item.title }}</a></b>
 
     {{ $details := slice }}
     {{ with $item.details }}
@@ -46,9 +46,6 @@
                     </li>
                 {{ end }}
             {{ end }}
-            <li>
-                <strong><a href="{{ .Permalink }}">Read More</a></strong>
-            </li>
         </ul>
     </nav>
 
