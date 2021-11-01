@@ -9,7 +9,9 @@
         {{ $page = $site.GetPage $page }}
         {{ $pages = $pages | append $page }}
         {{ end }}
-        {{ partial "sections/carouselpreview" $pages }}
+
+        {{ $params := dict }}
+        {{ partial "sections/carouselpreview" ( dict "content" $pages "params" $params ) }}
     {{ end }}
 
     {{ if isset .Params "tweet" }}
