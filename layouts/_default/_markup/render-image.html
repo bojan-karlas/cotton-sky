@@ -1,26 +1,40 @@
 <picture>
 
     {{- $dest := .Destination -}}
+    {{- $destDark := printf "%s-darkmode%s" (strings.TrimSuffix (path.Ext $dest) $dest) (path.Ext $dest) -}}
     {{- $alt := .Text -}}
     {{- $title := .Title -}}
 
-    {{- $img := resources.GetMatch .Destination -}}
+    {{- $img := resources.GetMatch $dest -}}
     {{- if not $img -}}
-        {{- $img = resources.Get .Destination -}}
+        {{- $img = resources.Get $dest -}}
     {{- end -}}
     {{- if not $img -}}
-        {{- $img = .Page.Resources.GetMatch .Destination -}}
+        {{- $img = .Page.Resources.GetMatch $dest -}}
+    {{- end -}}
+
+    {{- $imgDark := resources.GetMatch $destDark -}}
+    {{- if not $imgDark -}}
+        {{- $imgDark = resources.Get $destDark -}}
+    {{- end -}}
+    {{- if not $imgDark -}}
+        {{- $imgDark = .Page.Resources.GetMatch $destDark -}}
     {{- end -}}
 
     {{- if $img -}}
         {{ $size := printf "%dx%d" $img.Width $img.Height }}
+
+        {{- if $imgDark -}}
+            {{ $resizedImgDark := printf "%s" $size | $imgDark.Resize }}
+            {{ $resizedImgWebpDark := printf "%s webp picture" $size | $imgDark.Resize }}
+            <source srcset="{{ $resizedImgDark.Permalink }}" media="(prefers-color-scheme: dark)" />
+            <source srcset="{{ $resizedImgWebpDark.Permalink }}" media="(prefers-color-scheme: dark)" type="image/webp" />
+        {{- end -}}
+
         {{ $resizedImg := printf "%s" $size | $img.Resize }}
         {{ $resizedImgWebp := printf "%s webp picture" $size | $img.Resize }}
-
-        <picture>
-            <source srcset="{{ $resizedImgWebp.Permalink }}" type="image/webp" />
-            <img src="{{ $resizedImg.Permalink }}" alt="{{ $alt }}" {{ with $title}} title="{{ . }}"{{ end }} loading="lazy" decoding="async">
-        </picture>
+        <source srcset="{{ $resizedImgWebp.Permalink }}" type="image/webp" />
+        <img src="{{ $resizedImg.Permalink }}" alt="{{ $alt }}" {{ with $title}} title="{{ . }}"{{ end }} loading="lazy" decoding="async">
 
     {{- else -}}
         <img src="{{ $dest | safeURL }}" alt="{{ $alt }}" {{ with $title}} title="{{ . }}"{{ end }} loading="lazy" decoding="async"/>
