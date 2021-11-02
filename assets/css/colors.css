@@ -10,12 +10,12 @@
 
 @media (prefers-color-scheme: dark) {
     :root {
-        --color-background: rgb(0, 0, 0);
-        --color-backplate: rgb(36, 36, 36);
-        --color-foreground: rgb(219, 219, 219);
-        --color-highlight: rgb(130, 130, 130);
+        --color-background: rgb(14, 14, 14);
+        --color-backplate: rgb(72, 72, 72);
+        --color-foreground: rgb(255, 255, 255);
+        --color-highlight: rgb(166, 166, 166);
         --color-shadow: rgba(255, 255, 255, 0.4);
-        --color-soft: rgb(190, 190, 190);
+        --color-soft: rgb(226, 226, 226);
         --color-primary: rgb(135, 206, 235);
     }
 
