@@ -4,7 +4,7 @@ body {
     font-family: 'Bitter', serif;
 }
 
-h1, h2, h3 {
+h1, h2, h3, body>header>div>span {
     font-family: 'Calistoga', serif;
 }
 

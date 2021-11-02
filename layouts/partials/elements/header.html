@@ -1,6 +1,8 @@
+{{ $currentPage := . }}
+
 <nav>
     <ul>
-        {{ $currentPage := . }}
+        
         {{ $selectedExists := false }}
         {{ range .Site.Menus.main }}
 
@@ -20,3 +22,28 @@
         {{ end }}
     </ul>
 </nav>
+
+{{ if and (not $currentPage.IsHome ) (not $currentPage.Params.hideHeaderTitle ) }}
+    {{ $homePage := .Site.Home }}
+    <div>
+        {{ with .Site.Params.logo }}
+            {{- $img := $homePage.Resources.GetMatch . -}}
+            {{- if not $img -}}
+                {{- $img = resources.Get . -}}
+            {{- end -}}
+
+            {{- if $img -}}
+                {{- $resizedImg := $img.Fit "48x48" -}}
+                {{- $resizedImgWebp := $img.Fit "48x48 webp picture" -}}
+                <picture>
+                    <source srcset="{{ $resizedImgWebp.Permalink }}" type="image/webp" />
+                    <img src="{{ $resizedImg.Permalink }}" loading="lazy" decoding="async">
+                </picture>
+            {{- end -}}
+        {{ end }}
+
+        {{ with $homePage.Params.title }}
+            <span>{{ . }}</span>
+        {{ end }}
+    </div>
+{{ end }}
