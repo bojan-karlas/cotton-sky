@@ -6,9 +6,25 @@
 {{ $typeIsPage         := (findRE "Page|pageState" $type) }}
 
 {{ $permalink := "" }}
-{{ if $typeIsPage }}
-    {{ $permalink = $content.Permalink }}
-    {{ $content = $content.Params }}
+{{ if not $params.preventTitleLinks }}
+    {{ if $typeIsPage }}
+        {{ if and (not $content.Draft ) ( not $content.Params.hidden ) }}
+            {{ $permalink = $content.Permalink }}
+        {{ end }}
+        {{ $content = $content.Params }}
+    {{ end }}
+    {{ if not $permalink }}
+        {{ with $content.links }}
+            {{ range $link := . }}
+                {{ if $link.primary }}{{ $permalink = $link.href }}{{ end }}
+            {{ end }}
+        {{ end }}
+        {{ if not $permalink }}
+            {{ with $content.links }}
+                {{ with index . 0 }}{{ $permalink = .href }}{{ end }}
+            {{ end }}
+        {{ end }}
+    {{ end }}
 {{ end }}
 
 <div class="griditem">
@@ -19,7 +35,9 @@
         {{- $img = cond (ne $img nil) $img (resources.Get $content.thumbnail) -}}
         {{- if (ne $img nil) -}}
             {{- $resizedImg := $img.Fit "250x250" -}}
+            {{ if $typeIsPage }}{{ with $permalink }}<a href="{{ . }}">{{ end }}{{ end }}
             <img src="{{ $resizedImg.Permalink }}" style="max-height: 10em" alt=""><br>
+            {{ if $typeIsPage }}{{ with $permalink }}</a>{{ end }}{{ end }}
         {{- end -}}
     {{ end }}
 
