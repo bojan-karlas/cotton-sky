@@ -664,6 +664,15 @@ details p:last-child {
         content: "≡";
     }
 
+    .grid .griditem {
+        flex: 0;
+        min-width: 100%;   
+    }
+    
+    .grid.small .griditem {
+        min-width: 30%;
+    }
+
     .phoneonly {
         display: unset;
     }
