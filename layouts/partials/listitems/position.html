@@ -1,7 +1,37 @@
+{{ $content := .content }}
+{{ $params := .params }}
+
+{{ $value              := $content }}
+{{ $type               := (printf "%T" $value) }}
+{{ $typeIsPage         := (findRE "Page|pageState" $type) }}
+
+{{ $permalink := "" }}
+{{ if not $params.preventTitleLinks }}
+    {{ if $typeIsPage }}
+        {{ if and (not $content.Draft ) ( not $content.Params.hidden ) }}
+            {{ $permalink = $content.Permalink }}
+        {{ end }}
+    {{ end }}
+    {{ if not $permalink }}
+        {{ with $content.Params.links }}
+            {{ range $link := . }}
+                {{ if $link.primary }}{{ $permalink = $link.href }}{{ end }}
+            {{ end }}
+        {{ end }}
+        {{ if not $permalink }}
+            {{ with $content.Params.links }}
+                {{ with index . 0 }}{{ $permalink = .href }}{{ end }}
+            {{ end }}
+        {{ end }}
+    {{ end }}
+{{ end }}
+
+{{ if $typeIsPage }}{{ $content = $content.Params }}{{ end }}
+
 <div>
 
-    {{ $alt := (print .Name) }}
-    {{ with .thumbnail }}
+    {{ $alt := (print $content.name) }}
+    {{ with $content.thumbnail }}
 
         {{- $img := resources.GetMatch . -}}
         {{- if not $img -}}
@@ -22,10 +52,10 @@
         {{ end }}
     {{ end }}
 
-    <b>{{ .title }}</b><br>
+    <b>{{ $content.title }}</b><br>
 
-    {{ delimit .details " / " }} / {{ .place }}
+    {{ delimit $content.details " / " }} / {{ $content.place }}
 
-    {{ with .summary }}<br><em>{{ . }}</em>{{ end }}
+    {{ with $content.summary }}<br><em>{{ . }}</em>{{ end }}
 
 </div>

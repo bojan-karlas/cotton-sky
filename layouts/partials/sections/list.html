@@ -54,6 +54,6 @@
     {{ end }}
 
 
-    {{ partial ( printf "listitems/%s" ( lower $itemtype ) ) . }}
+    {{ partial ( printf "listitems/%s" ( lower $itemtype ) ) ( dict "content" . "params" $params ) }}
 
 {{ end }}

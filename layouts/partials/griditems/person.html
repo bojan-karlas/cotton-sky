@@ -11,21 +11,22 @@
         {{ if and (not $content.Draft ) ( not $content.Params.hidden ) }}
             {{ $permalink = $content.Permalink }}
         {{ end }}
-        {{ $content = $content.Params }}
     {{ end }}
     {{ if not $permalink }}
-        {{ with $content.links }}
+        {{ with $content.Params.links }}
             {{ range $link := . }}
                 {{ if $link.primary }}{{ $permalink = $link.href }}{{ end }}
             {{ end }}
         {{ end }}
         {{ if not $permalink }}
-            {{ with $content.links }}
+            {{ with $content.Params.links }}
                 {{ with index . 0 }}{{ $permalink = .href }}{{ end }}
             {{ end }}
         {{ end }}
     {{ end }}
 {{ end }}
+
+{{ if $typeIsPage }}{{ $content = $content.Params }}{{ end }}
 
 <div class="griditem">
     {{ if isset $content "thumbnail" }}

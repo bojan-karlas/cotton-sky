@@ -1,7 +1,37 @@
+{{ $content := .content }}
+{{ $params := .params }}
+
+{{ $value              := $content }}
+{{ $type               := (printf "%T" $value) }}
+{{ $typeIsPage         := (findRE "Page|pageState" $type) }}
+
+{{ $permalink := "" }}
+{{ if not $params.preventTitleLinks }}
+    {{ if $typeIsPage }}
+        {{ if and (not $content.Draft ) ( not $content.Params.hidden ) }}
+            {{ $permalink = $content.Permalink }}
+        {{ end }}
+    {{ end }}
+    {{ if not $permalink }}
+        {{ with $content.Params.links }}
+            {{ range $link := . }}
+                {{ if $link.primary }}{{ $permalink = $link.href }}{{ end }}
+            {{ end }}
+        {{ end }}
+        {{ if not $permalink }}
+            {{ with $content.Params.links }}
+                {{ with index . 0 }}{{ $permalink = .href }}{{ end }}
+            {{ end }}
+        {{ end }}
+    {{ end }}
+{{ end }}
+
+{{ if $typeIsPage }}{{ $content = $content.Params }}{{ end }}
+
 <div>
 
-    {{ $alt := (print .name) }}
-    {{ with .thumbnail }}
+    {{ $alt := (print $content.name) }}
+    {{ with $content.thumbnail }}
 
         {{ $img := resources.Get . }}
         
@@ -17,17 +47,17 @@
         {{ end }}
     {{ end }}
 
-    <b>{{ .title }}</b><br>
+    <b>{{ $content.title }}</b><br>
     
-    {{ delimit .authors ", <wbr>" }}<br>
+    {{ delimit $content.authors ", <wbr>" }}<br>
 
     <em>
-        {{ $shorthand := delimit (slice .venueShort .venueTrack) " " }}
-        {{ with .venueShort }}<b>[{{ trim $shorthand " " }}]</b>{{ end }}
-        {{ .venueLong }}
+        {{ $shorthand := delimit (slice $content.venueShort $content.venueTrack) " " }}
+        {{ with $content.venueShort }}<b>[{{ trim $shorthand " " }}]</b>{{ end }}
+        {{ $content.venueLong }}
     </em>
 
-    {{ with .abstract }}
+    {{ with $content.abstract }}
         <details>
             <summary>Abstract</summary>
             <p>{{ . | markdownify }}</p>
@@ -36,12 +66,12 @@
     
     <nav class="noprint">
         <ul>
-            {{ range $key, $value := .Links }}
+            {{ range $key, $value := $content.links }}
                 <li>
                 <strong><a href="{{ $value }}">{{ $key }}</a></strong>
                 </li>
             {{ end }}
-            {{ with .bibTeX }}
+            {{ with $content.bibTeX }}
                 <li>
                 <strong><a onclick="copyToClipboard('{{ . }}')" title="Copy to clipboard" clickmessage="Copied!">BibTeX</a></strong>
                 </li>

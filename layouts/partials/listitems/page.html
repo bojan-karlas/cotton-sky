@@ -1,9 +1,39 @@
+{{ $content := .content }}
+{{ $params := .params }}
+
+{{ $value              := $content }}
+{{ $type               := (printf "%T" $value) }}
+{{ $typeIsPage         := (findRE "Page|pageState" $type) }}
+
+{{ $permalink := "" }}
+{{ if not $params.preventTitleLinks }}
+    {{ if $typeIsPage }}
+        {{ if and (not $content.Draft ) ( not $content.Params.hidden ) }}
+            {{ $permalink = $content.Permalink }}
+        {{ end }}
+    {{ end }}
+    {{ if not $permalink }}
+        {{ with $content.Params.links }}
+            {{ range $link := . }}
+                {{ if $link.primary }}{{ $permalink = $link.href }}{{ end }}
+            {{ end }}
+        {{ end }}
+        {{ if not $permalink }}
+            {{ with $content.Params.links }}
+                {{ with index . 0 }}{{ $permalink = .href }}{{ end }}
+            {{ end }}
+        {{ end }}
+    {{ end }}
+{{ end }}
+
+{{ if $typeIsPage }}{{ $content = $content.Params }}{{ end }}
+
 <div>
-    {{ if isset .Params "thumbnail" }}
-        {{- $img := .Resources.GetMatch .Params.thumbnail -}}
-        {{- $img = cond (ne $img nil) $img (.Parent.Resources.GetMatch .Params.thumbnail) -}}
-        {{- $img = cond (ne $img nil) $img (.Parent.Parent.Resources.GetMatch .Params.thumbnail) -}}
-        {{- $img = cond (ne $img nil) $img (resources.Get .Params.thumbnail) -}}
+    {{ if isset $content "thumbnail" }}
+        {{- $img := .Resources.GetMatch $content.thumbnail -}}
+        {{- $img = cond (ne $img nil) $img (.Parent.Resources.GetMatch $content.thumbnail) -}}
+        {{- $img = cond (ne $img nil) $img (.Parent.Parent.Resources.GetMatch $content.thumbnail) -}}
+        {{- $img = cond (ne $img nil) $img (resources.Get $content.thumbnail) -}}
         {{- if (ne $img nil) -}}
             {{- $resizedImg := $img.Fit "250x250" -}}
             <aside>
@@ -12,13 +42,15 @@
         {{- end -}}
     {{ end }}
 
-    <b>{{ .Params.title }}</b>
-    {{with .Params.summary }}<em><br>{{ . }}<br></em>{{ end }}
+    <b>{{ $content.title }}</b>
+    {{with $content.summary }}<em><br>{{ . }}<br></em>{{ end }}
     <nav class="noprint">
         <ul>
+            {{ with $permalink }}
             <li>
-                <strong><a href="{{ .Permalink }}">Read More</a></strong>
+                <strong><a href="{{ . }}">Read More</a></strong>
             </li>
+            {{ end }}
         </ul>
     </nav>
 </div>
