@@ -38,8 +38,5 @@
 {{ $vars.Set "@context" "http://www.schema.org" }}
 
 <script type='application/ld+json'>
-    {
-    {{ range $key, $value := $vars.Values }}"{{ $key }}" : {{ $value }},
-    {{ end }}
-    }
+    {{ $vars.Values | jsonify | safeJS }}
 </script>
