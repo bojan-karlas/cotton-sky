@@ -304,6 +304,10 @@ main>header nav em {
     font-style: normal;
 }
 
+main>header>nav ul {
+    column-gap: 1.5em;
+}
+
 main>header nav a {
     /* padding: 0.75em; */
     font-weight: bold;
@@ -550,6 +554,7 @@ details p:last-child {
     transform: scaleX(0);
     margin-left: 0;
     margin-right: 0;
+    order: 1000;
 }
 
 .phoneonly {

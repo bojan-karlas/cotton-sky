@@ -68,7 +68,7 @@
         <ul>
             {{ range $key, $value := $content.links }}
                 <li>
-                <strong><a href="{{ $value }}">{{ $key }}</a></strong>
+                <strong><a href="{{ $value }}">{{ $key | humanize }}</a></strong>
                 </li>
             {{ end }}
             {{ with $content.bibTeX }}
