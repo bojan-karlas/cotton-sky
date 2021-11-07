@@ -1,0 +1,10 @@
+section .comment {
+    margin-top: 2em;
+}
+
+section .comment img {
+    max-height: 32px;
+    margin-bottom: -0.5em;
+    padding-right: 0.1em;
+    border-radius: 50%;
+}

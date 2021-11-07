@@ -1,0 +1,107 @@
+body>header {
+    font-size: 1.2rem;
+    min-height: 5em;
+    max-width: 1200px;
+    margin: 0 auto;
+
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row-reverse;
+    align-items: center;
+    padding-right: 100px;
+    padding-left: 0em;
+}
+
+body>header>div {
+    align-self: flex-start;
+    display: flex;
+    align-items: center;
+    column-gap: 1em;
+    margin: 0.5em;
+}
+
+body>header>nav {
+    align-self: flex-start;
+}
+
+body>header>nav ul {
+    row-gap: 1em;
+    column-gap: 2em;
+}
+
+body>header>nav .selected {
+    border: 1px var(--color-foreground) solid;
+    border-radius: 1em;
+}
+
+body>header>nav a {
+    padding: 0.75em;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+
+@media screen and (max-width: 1250px) {
+
+    body>header {
+        padding-right: 1em;
+    }
+
+}
+
+@media screen and (max-width: 1000px) {
+
+    body>header {
+        font-size: 1.2rem;
+    }
+
+}
+
+@media screen and (max-width: 750px) {
+
+    body>header>nav ul {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: flex-end;
+    }
+
+    body>header>nav ul {
+        row-gap: 1em;
+        transition: row-gap 0.5s cubic-bezier(0, 1, 0, 1);
+    }
+
+    body>header>nav :not(ul.dropdown-open) {
+        row-gap: 0;
+        transition: row-gap 0.5s cubic-bezier(0, 1, 0, 1);
+    }
+
+    body>header>nav ul.dropdown-open>:not(.selected) {
+        max-height: 2em;
+        transition: max-height 0.5s cubic-bezier(0, 1, 0, 1);
+    }
+
+    body>header>nav ul {
+        row-gap: 1em;
+        transition: row-gap 0.5s cubic-bezier(0, 1, 0, 1);
+    }
+
+    body>header>nav :not(ul.dropdown-open) {
+        row-gap: 0;
+        transition: row-gap 0.5s cubic-bezier(0, 1, 0, 1);
+    }
+
+    body>header>nav ul.dropdown-open>:not(.selected) {
+        max-height: 2em;
+        transition: max-height 0.5s cubic-bezier(0, 1, 0, 1);
+    }
+
+    body>header>nav :not(ul.dropdown-open)>:not(.selected) {
+        max-height: 0;
+        transition: max-height 0.5s cubic-bezier(0, 1, 0, 1);
+    }
+
+    body>header>nav .selected a::after {
+        content: "≡";
+    }
+
+}

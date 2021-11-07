@@ -1,60 +1,50 @@
 {{ define "main" }}
     
-    {{ if isset .Params "sections" }}
+    {{ $sections := slice (dict "partial" "list" "content" (dict "param" "pages") ) }}
+    {{ with .Params.sections }}{{ $sections = . }}{{ end }}
 
-        {{ $page := . }}
-        {{ range .Params.sections }}
-            {{ if .noprint }}
-                <section class="noprint">
-            {{ else }}
-                <section>
-            {{ end }}
-
-                {{ with .title }}<h2>{{.}}</h2>{{ end }}
-
-                {{ $content := $page }}
-                {{ with .content }}
-                    {{ with .page }}
-                        {{ $content = $page.GetPage . }}
-                    {{ end }}
-                    {{ with .data }}
-                        {{ $path := split . "/" }}
-                        {{ $content = $.Site.Data }}
-                        {{ range $path }}{{ $content = index $content . }}{{ end }}
-                    {{ end }}
-                    {{ with .param }}
-                        {{ if eq . "pages" }}
-                            {{ $content = $content.Pages }}
-                        {{ else }}
-                            {{ $content = $content.Param . }}
-                        {{ end }}
-                    {{ end }}
-                    {{ with .field }}{{ $content = index $content . }}{{ end }}
-                    {{ with .where }}
-                        {{ $content = where $content .key .operator .match }}
-                    {{ end }}
-                {{ end }}
-
-                {{ $params := dict }}
-                {{ with .params }}{{ $params = . }}{{ end }}
-
-                {{ if isset . "partial" }}
-                    {{ partial (printf "sections/%s" .partial) ( dict "content" $content "params" $params ) }}
-                {{ else }}
-                    {{ ( dict "content" $content "params" $params ) }}
-                {{ end }}
-            </section>
+    {{ $page := . }}
+    {{ range $sections }}
+        {{ if .noprint }}
+            <section class="noprint">
+        {{ else }}
+            <section>
         {{ end }}
 
-    {{ else }}
-        <section>
-            {{ if gt (len .Pages) 0 }}
-                {{ range .Pages }}
-                    {{ partial "elements/preview" . }}
+            {{ with .title }}<h2>{{.}}</h2>{{ end }}
+
+            {{ $content := $page }}
+            {{ with .content }}
+                {{ with .page }}
+                    {{ $content = $page.GetPage . }}
                 {{ end }}
+                {{ with .data }}
+                    {{ $path := split . "/" }}
+                    {{ $content = $.Site.Data }}
+                    {{ range $path }}{{ $content = index $content . }}{{ end }}
+                {{ end }}
+                {{ with .param }}
+                    {{ if eq . "pages" }}
+                        {{ $content = $content.Pages }}
+                    {{ else }}
+                        {{ $content = $content.Param . }}
+                    {{ end }}
+                {{ end }}
+                {{ with .field }}{{ $content = index $content . }}{{ end }}
+                {{ with .where }}
+                    {{ $content = where $content .key .operator .match }}
+                {{ end }}
+            {{ end }}
+
+            {{ $params := dict }}
+            {{ with .params }}{{ $params = . }}{{ end }}
+
+            {{ if isset . "partial" }}
+                {{ partial (printf "sections/%s" .partial) ( dict "content" $content "params" $params ) }}
             {{ else }}
-                <p><em>No posts yet.</em></p>
+                {{ ( dict "content" $content "params" $params ) }}
             {{ end }}
         </section>
     {{ end }}
+
 {{ end }}

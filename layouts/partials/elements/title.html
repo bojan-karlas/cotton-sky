@@ -19,7 +19,7 @@
                 
                 <picture>
                     <source srcset="{{ $resizedImgWebp.Permalink }}" type="image/webp" />
-                    <img src="{{ $resizedImg.Permalink }}" style="max-height: 10em; max-width: 250px" alt="{{ .Params.thumbnailAlt }}" loading="lazy" decoding="async">
+                    <img src="{{ $resizedImg.Permalink }}" alt="{{ .Params.thumbnailAlt }}" loading="lazy" decoding="async">
                 </picture>
 
                 {{ if .Params.thumbnailClickable }}

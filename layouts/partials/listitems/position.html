@@ -42,10 +42,10 @@
             {{- $resizedImg := .Fit "250x250" -}}
             {{- $resizedImgWebp := .Fit "250x250 webp picture" -}}
 
-            <aside>
+            <aside class="x-small">
                 <picture>
                     <source srcset="{{ $resizedImgWebp.Permalink }}" type="image/webp" />
-                    <img src="{{ $resizedImg.Permalink }}" style="max-width: 8em; max-height: 4em;" alt="{{ $alt }}" loading="lazy" decoding="async">
+                    <img src="{{ $resizedImg.Permalink }}" alt="{{ $alt }}" loading="lazy" decoding="async">
                 </picture>
                 <!-- <img src="{{ . }}" style="max-height: 4em;" alt="{{ $alt }}"> -->
             </aside>

@@ -1,0 +1,56 @@
+.glide {
+    margin-top: 0;
+}
+
+.glide div {
+    margin-top: 0;
+}
+
+.carouselcontent {
+    display: flex;
+    white-space: normal;
+}
+
+.carouselcontent>img {
+    /* float: right; */
+    margin: 1em;
+    max-height: 10em;
+}
+
+.carouselcontent>div {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    margin: 1em 0;
+    flex: 1;
+}
+
+.carouselbullets {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carouselbullets * {
+    padding: 0 0.2em;
+}
+
+.glide__bullet {
+    transform: scale(0.6);
+    transition-duration: 0.5s;
+}
+
+.glide__bullet--active {
+    transform: scale(1.0);
+    transition-duration: 0.5s;
+}
+
+.glide__arrow--left {
+    order: -1;
+}
+
+@media screen and (max-width: 600px) {
+    .carouselcontent>img {
+        max-height: 7em;
+    }
+}

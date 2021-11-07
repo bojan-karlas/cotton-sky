@@ -26,18 +26,24 @@
     {{ end }}
 {{ end }}
 
+{{ $parents := slice $content }}
+{{ with $content.Parent }}{{ $parents = $parents | append . }}{{ end }}
+{{ with $content.Parent.Parent }}{{ $parents = $parents | append . }}{{ end }}
+{{ with $content.Parent.Parent.Parent }}{{ $parents = $parents | append . }}{{ end }}
+
 {{ if $typeIsPage }}{{ $content = $content.Params }}{{ end }}
 
 <div>
     {{ if isset $content "thumbnail" }}
-        {{- $img := .Resources.GetMatch $content.thumbnail -}}
-        {{- $img = cond (ne $img nil) $img (.Parent.Resources.GetMatch $content.thumbnail) -}}
-        {{- $img = cond (ne $img nil) $img (.Parent.Parent.Resources.GetMatch $content.thumbnail) -}}
-        {{- $img = cond (ne $img nil) $img (resources.Get $content.thumbnail) -}}
+        {{ $img := resources.Get "_" }}
+        {{ range $parents }}
+            {{ if (eq $img nil) }}{{ $img = .Resources.GetMatch $content.thumbnail }}{{ end }}
+        {{ end }}
+        {{ $img = cond (ne $img nil) $img (resources.Get $content.thumbnail) }}
         {{- if (ne $img nil) -}}
             {{- $resizedImg := $img.Fit "250x250" -}}
             <aside>
-                <img src="{{ $resizedImg.Permalink }}" style="max-height: 10em; max-width: 250px" alt="">
+                <img src="{{ $resizedImg.Permalink }}" alt="">
             </aside>
         {{- end -}}
     {{ end }}

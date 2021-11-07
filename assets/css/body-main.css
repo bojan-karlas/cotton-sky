@@ -1,0 +1,44 @@
+body main {
+    max-width: 1200px;
+    margin: 0 auto;
+    /* margin: 2em auto; */
+    padding-left: 250px;
+    padding-right: 200px;
+    padding-top: 2em;
+    padding-bottom: 2em;
+
+    min-height: calc(100vh - 17em);
+
+    display: flex;
+    flex-direction: column;
+}
+
+body main section {
+    float: left;
+    clear: both;
+    width: 100%;
+}
+
+body main section div {
+    margin-top: 1em;
+    clear: both;
+    width: 100%;
+}
+
+@media screen and (max-width: 1250px) {
+
+    body>main {
+        padding-left: 250px;
+        padding-right: 1em;
+    }
+
+}
+
+@media screen and (max-width: 1000px) {
+
+    body>main {
+        padding-left: 1em;
+        padding-right: 1em;
+    }
+
+}

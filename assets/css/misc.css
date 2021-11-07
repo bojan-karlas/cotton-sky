@@ -1,0 +1,18 @@
+.hidden {
+    max-width: 0;
+    transform: scaleX(0);
+    margin-left: 0;
+    margin-right: 0;
+    order: 1000;
+}
+
+.phoneonly {
+    display: none;
+}
+
+@media screen and (max-width: 750px) {
+
+    .phoneonly {
+        display: unset;
+    }
+}

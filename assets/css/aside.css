@@ -1,0 +1,100 @@
+aside {
+    float: left;
+    position: relative;
+    width: 0px;
+    direction: rtl;
+    right: 2em;
+}
+
+aside * {
+    direction: ltr;
+    text-align: right;
+}
+
+aside.right {
+    float: right;
+    align-self: flex-end;
+    height: 0px;
+    direction: ltr;
+    font-size: 0.8em;
+}
+
+aside.right * {
+    text-align: left;
+    width: 200px;
+}
+
+aside.sticky {
+    position: sticky;
+    top: 2em;
+}
+
+header aside img {
+    max-height: 200px;
+    max-width: 250px;
+}
+
+aside img {
+    max-height: 150px;
+    max-width: 200px;
+}
+
+aside.small img {
+    max-height: 100px;
+    max-width: 150px;
+}
+
+aside.x-small img {
+    max-height: 75px;
+    max-width: 150px;
+}
+
+aside.large img, aside figure img {
+    max-height: 200px;
+    max-width: 250px;
+}
+
+aside figure {
+    width: min-content;
+}
+
+@media screen and (max-width: 1280px) {
+    aside img {
+        max-width: 200px;
+    }
+}
+
+@media screen and (max-width: 1250px) {
+
+    aside.right {
+        display: none;
+    }
+
+}
+
+@media screen and (max-width: 1000px) {
+
+    aside {
+        float: none;
+        position: static;
+        height: auto;
+        width: auto;
+        direction: ltr;
+        right: 0em;
+        margin-bottom: 0.5em;
+    }
+
+    aside img {
+        max-height: 250px;
+        max-width: 300px;
+    }
+
+    aside.large img, aside figure img {
+        max-height: 300px;
+        max-width: 320px;
+    }
+
+     aside * {
+        text-align: left;
+     }
+}

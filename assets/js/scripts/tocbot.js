@@ -30,6 +30,5 @@ document.addEventListener("DOMContentLoaded", function(event) {
         headingSelector: headingSelector,
 
         orderedList: false,
-
     });
 });

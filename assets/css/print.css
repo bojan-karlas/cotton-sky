@@ -1,0 +1,41 @@
+@media print {
+    @page {
+        margin: 1cm;
+    }
+    body {
+        margin: 1.6cm;
+        font-size: 70%;
+    }
+    body>header {
+        display: none;
+    }
+    body>footer {
+        display: none;
+    }
+    body>main {
+        max-width: 1400px;
+        padding-left: 100px;
+        padding-right: 0px;
+        position: relative;
+    }
+    h1, h2, h3 {
+        break-after: avoid;
+    }
+    div {
+        break-inside: avoid;
+        position: relative;
+    }
+    section {
+        /* break-inside: avoid; */
+        position: relative;
+    }
+    .noprint {
+        display: none;
+    }
+    aside nav {
+        display: none;
+    }
+    details {
+        display: none;
+    }
+}

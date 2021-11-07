@@ -1,0 +1,23 @@
+body>footer {
+
+    max-width: 1200px;
+    margin: 0 auto;
+    
+    clear: both;
+    display: flex;
+    justify-content: left;
+    align-items: flex-end;
+
+    padding-left: 250px;
+    padding-right: 200px;
+
+}
+
+@media screen and (max-width: 1000px) {
+
+    body>footer {
+        padding-left: 1em;
+        padding-right: 1em;
+    }
+
+}

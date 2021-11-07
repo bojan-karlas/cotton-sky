@@ -1,0 +1,18 @@
+strong a {
+    text-decoration: none;
+}
+
+strong a::before {
+    content: "[";
+    color: var(--color-primary);
+}
+
+strong a::after {
+    content: "]";
+    color: var(--color-primary);
+}
+
+strong a:hover {
+    color: var(--color-primary);
+    text-decoration: underline;
+}

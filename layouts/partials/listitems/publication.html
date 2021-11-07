@@ -38,10 +38,10 @@
         {{ with $img }}
             {{- $resizedImg := .Fill "360x216 Top" -}}
             {{- $resizedImgWebp := .Fill "360x216 Top webp picture" -}}
-            <aside>
+            <aside class="small">
                 <picture>
                     <source srcset="{{ $resizedImgWebp.Permalink }}" type="image/webp" />
-                    <img src="{{ $resizedImg.Permalink }}" style="max-width: 8em;" alt="{{ $alt }}" loading="lazy" decoding="async">
+                    <img src="{{ $resizedImg.Permalink }}" alt="{{ $alt }}" loading="lazy" decoding="async">
                 </picture>
             </aside>
         {{ end }}

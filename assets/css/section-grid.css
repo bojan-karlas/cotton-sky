@@ -1,0 +1,33 @@
+section .grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: baseline;
+    column-gap: 5%;
+}
+
+section .grid .griditem {
+    flex: 0;
+    min-width: 30%;   
+}
+
+section .grid.small .griditem {
+    min-width: 16%;
+}
+
+section .grid .griditem img {
+    max-width: 100%;
+}
+
+@media screen and (max-width: 750px) {
+
+    section .grid .griditem {
+        flex: 0;
+        min-width: 100%;   
+    }
+    
+    section .grid.small .griditem {
+        min-width: 30%;
+    }
+
+}

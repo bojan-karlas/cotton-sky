@@ -8,6 +8,10 @@
     --color-primary: rgb(135, 206, 235);
 }
 
+img {
+    box-shadow: 0px 0px 2em -1em var(--color-shadow);
+}
+
 @media (prefers-color-scheme: dark) {
     :root {
         --color-background: rgb(14, 14, 14);
