@@ -9,7 +9,11 @@ body>header {
     flex-direction: row-reverse;
     align-items: center;
     padding-right: 100px;
-    padding-left: 0em;
+    padding-left: 250px;
+}
+
+body>header>* {
+    min-height: 4em;
 }
 
 body>header>div {
@@ -17,11 +21,16 @@ body>header>div {
     display: flex;
     align-items: center;
     column-gap: 1em;
-    margin: 0.5em;
+}
+
+body>header>div>span {
+    margin-left: 0.5em;
 }
 
 body>header>nav {
     align-self: flex-start;
+    display: flex;
+    align-items: center;
 }
 
 body>header>nav ul {
@@ -45,6 +54,7 @@ body>header>nav a {
 
     body>header {
         padding-right: 1em;
+        padding-left: 1em;
     }
 
 }
