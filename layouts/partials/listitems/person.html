@@ -1,7 +1,7 @@
 {{ $content := .content }}
 {{ $params := .params }}
 
-{{ $value              := . }}
+{{ $value              := $content }}
 {{ $type               := (printf "%T" $value) }}
 {{ $typeIsPage         := (findRE "Page|pageState" $type) }}
 
@@ -47,8 +47,8 @@
             </aside>
         {{- end -}}
     {{ end }}
-            
-    <b>{{ $content.title }}</b>
+    
+    {{ with $content.title }}<b>{{ . }}</b>{{ end }}
 
     {{ $details := slice }}
     {{ with $content.details }}
