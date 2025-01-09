@@ -1,6 +1,10 @@
 
 {{ if .Get "aside" }}
 <aside>
+{{ else if .Get "smallaside" }}
+<aside class="small">
+{{ else if .Get "xsmallaside" }}
+<aside class="xsmall">
 {{ end }}
 
     <figure>
@@ -39,6 +43,6 @@
         </figcaption>
     </figure>
 
-{{ if .Get "aside" }}
+{{ if or (.Get "aside") (.Get "smallaside") (.Get "xsmallaside") }}
 </aside>
 {{ end }}
