@@ -5,7 +5,7 @@
     --color-highlight: rgb(125, 125, 125);
     --color-shadow: rgba(0, 0, 0, 0.3);
     --color-soft: rgb(65, 65, 65);
-    --color-primary: rgb(135, 206, 235);
+    --color-primary: rgb(53, 191, 217);
 }
 
 img {
@@ -20,7 +20,7 @@ img {
         --color-highlight: rgb(166, 166, 166);
         --color-shadow: rgba(255, 255, 255, 0.4);
         --color-soft: rgb(226, 226, 226);
-        --color-primary: rgb(135, 206, 235);
+        --color-primary: rgb(53, 191, 217);
     }
 
     img {
