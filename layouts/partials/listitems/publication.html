@@ -50,10 +50,22 @@
     {{ if $params.showShortref }}
         {{ $firstAuthor := index $content.authors 0 }}
         {{ $firstAuthorNames := split $firstAuthor " " }}
-        {{ $firstAuthorLastName := index $firstAuthorNames (sub (len $firstAuthorNames) 1) }}
-        {{ $shortRef := delimit (slice $firstAuthorLastName $content.venueShort $content.year) " " }}
-        {{ $shortRefLink := delimit (slice $firstAuthorLastName $content.venueShort $content.year) "-" }}
-        [<a href="#{{ $shortRefLink }}"><span id="{{ $shortRefLink }}">{{ $shortRef }}</span></a>]<br>
+        {{ $authorNames := index $firstAuthorNames (sub (len $firstAuthorNames) 1) }}
+        {{ $authorNamesLink := $authorNames }}
+        {{ if gt (len $content.authors) 1 }}
+            {{ if gt (len $content.authors) 2 }}
+                {{ $authorNames = printf "%s et al." $authorNames }}
+            {{ else }}
+                {{ $secondAuthor := index $content.authors 1 }}
+                {{ $secondAuthorNames := split $secondAuthor " " }}
+                {{ $secondAuthorLastName := index $secondAuthorNames (sub (len $secondAuthorNames) 1) }}
+                {{ $authorNames = printf "%s and %s" $authorNames $secondAuthorLastName }}
+                {{ $authorNamesLink = replace $authorNames " " "-" }}
+            {{ end }}
+        {{ end }}
+        {{ $shortRef := printf "%s, %s %d" $authorNames $content.venueShort $content.year }}
+        {{ $shortRefLink := delimit (slice $authorNamesLink $content.venueShort $content.year) "-" }}
+        (<a href="#{{ $shortRefLink }}"><span id="{{ $shortRefLink }}">{{ $shortRef }}</span></a>)<br>
     {{ end }}
 
     <b>{{ $content.title }}</b><br>
@@ -61,9 +73,16 @@
     {{ delimit $content.authors ", <wbr>" }}<br>
 
     <em>
-        {{ $shorthand := delimit (slice $content.venueShort $content.venueTrack) " " }}
-        {{ with $content.venueShort }}<b>[{{ trim $shorthand " " }}]</b>{{ end }}
-        {{ $content.venueLong }}
+        {{ if not $params.hideVenueTag }}
+            {{ $shorthand := delimit (slice $content.venueShort $content.venueTrack) " " }}
+            {{ with $content.venueShort }}<b>[{{ trim $shorthand " " }}]</b>{{ end }}
+        {{ end }}
+
+        {{ if $params.showYearAfterVenue }}
+            {{ $content.venueLong }}, {{ $content.year }}
+        {{ else }}
+            {{ $content.venueLong }}
+        {{ end }}
     </em>
 
     {{ with $content.abstract }}

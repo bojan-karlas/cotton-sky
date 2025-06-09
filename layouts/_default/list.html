@@ -19,15 +19,14 @@
                     {{ $content = $page.GetPage . }}
                 {{ end }}
                 {{ with .data }}
-                    {{ $path := split . "/" }}
-                    {{ $content = $.Site.Data }}
-                    {{ range $path }}{{ $content = index $content . }}{{ end }}
-                {{ end }}
-                {{ with .resource }}
-                    {{ $content = $content.Resources.GetMatch . | transform.Unmarshal }}
-                {{ end }}
-                {{ with .resources }}
-                    {{ $content = $content.Resources.Match . }}
+                    {{ $data := $content.Resources.GetMatch . }}
+                    {{ if $data }}
+                        {{ $content = $data | transform.Unmarshal }}
+                    {{ else }}
+                        {{ $content = $.Site.Data }}
+                        {{ $path := split . "/" }}
+                        {{ range $path }}{{ $content = index $content . }}{{ end }}
+                    {{ end }}
                 {{ end }}
                 {{ with .param }}
                     {{ if eq . "pages" }}
