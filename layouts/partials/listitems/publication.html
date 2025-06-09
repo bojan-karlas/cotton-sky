@@ -41,10 +41,19 @@
             <aside class="small">
                 <picture>
                     <source srcset="{{ $resizedImgWebp.Permalink }}" type="image/webp" />
-                    <img src="{{ $resizedImg.Permalink }}" alt="{{ $alt }}" loading="lazy" decoding="async">
+                    <img class="publication" src="{{ $resizedImg.Permalink }}" alt="{{ $alt }}" loading="lazy" decoding="async">
                 </picture>
             </aside>
         {{ end }}
+    {{ end }}
+    
+    {{ if $params.showShortref }}
+        {{ $firstAuthor := index $content.authors 0 }}
+        {{ $firstAuthorNames := split $firstAuthor " " }}
+        {{ $firstAuthorLastName := index $firstAuthorNames (sub (len $firstAuthorNames) 1) }}
+        {{ $shortRef := delimit (slice $firstAuthorLastName $content.venueShort $content.year) " " }}
+        {{ $shortRefLink := delimit (slice $firstAuthorLastName $content.venueShort $content.year) "-" }}
+        [<a href="#{{ $shortRefLink }}"><span id="{{ $shortRefLink }}">{{ $shortRef }}</span></a>]<br>
     {{ end }}
 
     <b>{{ $content.title }}</b><br>

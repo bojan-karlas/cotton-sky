@@ -23,6 +23,12 @@
                     {{ $content = $.Site.Data }}
                     {{ range $path }}{{ $content = index $content . }}{{ end }}
                 {{ end }}
+                {{ with .resource }}
+                    {{ $content = $content.Resources.GetMatch . | transform.Unmarshal }}
+                {{ end }}
+                {{ with .resources }}
+                    {{ $content = $content.Resources.Match . }}
+                {{ end }}
                 {{ with .param }}
                     {{ if eq . "pages" }}
                         {{ $content = $content.Pages }}
