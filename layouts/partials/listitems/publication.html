@@ -70,7 +70,7 @@
 
     <b>{{ $content.title }}</b><br>
     
-    {{ delimit $content.authors ", <wbr>" }}<br>
+    {{ delimit $content.authors ", <wbr>"  | safeHTML }}<br>
 
     <em>
         {{ if not $params.hideVenueTag }}
