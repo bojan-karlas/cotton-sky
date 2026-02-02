@@ -26,10 +26,10 @@
   {{ with .PublishDate }}<meta property="article:published_time" content="{{ .Format $iso8601 }}" />{{ end }}
   {{ with .Lastmod }}<meta property="article:modified_time" content="{{ .Format $iso8601 }}" />{{ end }}
 
-  {{- range .Site.Authors }}
+  {{- range .Site.Params.Authors }}
     {{ with .Social.facebook }}<meta property="article:author" content="https://www.facebook.com/{{ . }}" />{{ end }}
   {{- end -}}
-  {{ with .Site.Social.facebook }}<meta property="article:publisher" content="https://www.facebook.com/{{ . }}" />{{ end }}
+  {{ with .Site.Params.Social.facebook }}<meta property="article:publisher" content="https://www.facebook.com/{{ . }}" />{{ end }}
 
   {{- with .Params.tags -}}
     {{ range first 6 . }}<meta property="article:tag" content="{{ . }}" />{{ end }}
@@ -71,10 +71,10 @@
 
 {{- with .Title -}}<meta name="twitter:title" content="{{ . }}"/>{{- end -}}
 <meta name="twitter:description" content="{{ with .Summary }}{{ . | plainify }}{{ else }}{{if .IsPage}}{{ .Summary | plainify }}{{ else }}{{ with .Site.Params.summary }}{{ . | plainify }}{{ end }}{{ end }}{{ end -}}"/>
-{{- with .Site.Social.twitter -}}
+{{- with .Site.Params.Social.twitter -}}
   <meta name="twitter:site" content="@{{ . }}"/>
 {{- end -}}
-{{ range .Site.Authors }}
+{{ range .Site.Params.Authors }}
   {{ with .twitter -}}
     <meta name="twitter:creator" content="@{{ . }}"/>
   {{ end -}}
