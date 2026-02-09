@@ -60,10 +60,10 @@
     {{ end }}
     {{ with $content.place }}{{ $details = $details | append . }}{{ end }}
     {{ if $details }}
-        <br>{{ delimit $details " / " }}
+        <br>{{ delimit $details " / " | markdownify }}
     {{ end }}
 
-    {{with $content.summary }}<em><br>{{ . }}<br></em>{{ end }}
+    {{with $content.summary }}<em><br>{{ . | markdownify }}<br></em>{{ end }}
 
     <nav class="noprint">
         <ul>
@@ -79,9 +79,11 @@
                     </li>
                 {{ end }}
             {{ end }}
+            {{ with $permalink }}
             <li>
-                <strong><a href="{{ .Permalink }}">Read More</a></strong>
+                <strong><a href="{{ . }}">Read More</a></strong>
             </li>
+            {{ end }}
         </ul>
     </nav>
 
