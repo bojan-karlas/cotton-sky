@@ -57,7 +57,12 @@
                 
                 {{ if $link.large }}<em>{{ end }}
 
-                <a href="{{ $link.href }}" {{ with $link.title }}title="{{ . }}"{{ end }} {{ if $link.newtab }}target="_blank"{{ end }} >
+                <a
+                    {{ if not $link.obfuscate }}href="{{ $link.href }}"{{ end }}
+                    {{ with $link.title }}title="{{ . }}"{{ end }}
+                    {{ if $link.newtab }}target="_blank"{{ end }}
+                    {{ if $link.obfuscate }}href-encoded="{{ $link.href | base64Encode }}"{{ end }}
+                >
                     {{ if isset $link "icon" }}
                         <i class="fa {{ $link.icon }}" aria-hidden="true"></i>
                     {{end}}
