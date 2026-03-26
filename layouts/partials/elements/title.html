@@ -34,7 +34,7 @@
     <h1>
         {{- .Title -}}
         {{ if isset .Params "subtitle" }}
-        <wbr /><sub>/ {{ .Params.subtitle }}</sub>
+        <wbr /><sub>/ {{ .Params.subtitle | .Page.RenderString }}</sub>
         {{ end }}
     </h1>
 
