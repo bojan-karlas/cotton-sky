@@ -7,15 +7,25 @@
 <meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}" />
 <meta property="og:url" content="{{ .Permalink }}" />
 
-{{ if isset .Params "thumbnail" }}
-  {{- $img := .Resources.GetMatch .Params.thumbnail -}}
-  {{- if (ne .Parent nil) -}}
-    {{- $img = cond (ne $img nil) $img (cond (and (isset . "Parent") (ne .Parent nil) (isset .Parent "Resources") (ne .Parent.Resources nil)) (.Parent.Resources.GetMatch .Params.thumbnail) nil) -}}
-  {{- end -}}
-  {{- $img = cond (ne $img nil) $img (resources.Get .Params.thumbnail) -}}
-  {{- if (ne $img nil) -}}
-    <meta property="og:image" content="{{ $img.Permalink }}" />
-  {{- end -}}
+
+{{ $previewImage := "" }}
+{{ if (or (isset .Params "thumbnail") (isset .Params "preview_thumbnail")) }}
+  {{ $previewImagePath := "" }}
+  {{ if isset .Params "preview_thumbnail" }}
+    {{ $previewImagePath = .Params.preview_thumbnail }}
+  {{ else }}
+    {{ $previewImagePath = .Params.thumbnail }}
+  {{ end }}
+  
+  {{ $previewImage = .Resources.GetMatch $previewImagePath }}
+  {{ if (ne .Parent nil) }}
+    {{ $previewImage = cond (ne $previewImage nil) $previewImage (cond (and (isset . "Parent") (ne .Parent nil) (isset .Parent "Resources") (ne .Parent.Resources nil)) (.Parent.Resources.GetMatch $previewImagePath) nil) }}
+  {{ end }}
+  {{ $previewImage = cond (ne $previewImage nil) $previewImage (resources.Get $previewImagePath) }}
+{{ end }}
+
+{{ if (and (ne $previewImage nil) (ne $previewImage "")) }}
+  <meta property="og:image" content="{{ $previewImage.Permalink }}" />
 {{ end }}
 
 
@@ -55,18 +65,11 @@
 
 <!-- Twitter Cards -->
 
-{{ if isset .Params "thumbnail" }}
-  {{- $img := .Resources.GetMatch .Params.thumbnail -}}
-  {{- if (ne .Parent nil) -}}
-    {{- $img = cond (ne $img nil) $img (cond (and (isset . "Parent") (ne .Parent nil) (isset .Parent "Resources") (ne .Parent.Resources nil)) (.Parent.Resources.GetMatch .Params.thumbnail) nil) -}}
-  {{- end -}}
-  {{- $img = cond (ne $img nil) $img (resources.Get .Params.thumbnail) -}}
-  {{- if (ne $img nil) -}}
-    <meta name="twitter:card" content="summary_large_image"/>
-    <meta name="twitter:image" content="{{ $img.Permalink }}"/>
-  {{- else -}}
-    <meta name="twitter:card" content="summary"/>
-  {{- end -}}
+{{ if (and (ne $previewImage nil) (ne $previewImage "")) }}
+  <meta name="twitter:card" content="summary"/>
+  <meta name="twitter:image" content="{{ $previewImage.Permalink }}"/>
+{{ else }}
+  <meta name="twitter:card" content="summary"/>
 {{ end }}
 
 {{- with .Title -}}<meta name="twitter:title" content="{{ . }}"/>{{- end -}}
