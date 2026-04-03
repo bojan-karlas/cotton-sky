@@ -1,27 +1,29 @@
 {{ $currentPage := . }}
 
-<nav>
-    <ul>
-        
-        {{ $selectedExists := false }}
-        {{ range .Site.Menus.main }}
+{{ if .Site.Menus.main }}
+    <nav>
+        <ul>
+            
+            {{ $selectedExists := false }}
+            {{ range .Site.Menus.main }}
 
-            {{ $selected := or ($currentPage.IsMenuCurrent "main" .) ($currentPage.HasMenuCurrent "main" .) (eq $currentPage.Section .Pre) }}
-            {{ $selectedExists = or $selectedExists $selected }}
+                {{ $selected := or ($currentPage.IsMenuCurrent "main" .) ($currentPage.HasMenuCurrent "main" .) (eq $currentPage.Section .Pre) }}
+                {{ $selectedExists = or $selectedExists $selected }}
 
-            <li {{ if $selected }}class="selected"{{ end }} >
-                <a href="{{ .URL }}">
-                    {{ print .Name | safeHTML }}
-                </a>
-                {{ if or ($currentPage.IsMenuCurrent "main" .) ($currentPage.HasMenuCurrent "main" .) (eq $currentPage.Section .Pre) }}</b>{{ end }}
-            </li>
-        {{ end }}
+                <li {{ if $selected }}class="selected"{{ end }} >
+                    <a href="{{ .URL }}">
+                        {{ print .Name | safeHTML }}
+                    </a>
+                    {{ if or ($currentPage.IsMenuCurrent "main" .) ($currentPage.HasMenuCurrent "main" .) (eq $currentPage.Section .Pre) }}</b>{{ end }}
+                </li>
+            {{ end }}
 
-        {{ if not $selectedExists }}
-            <li class="selected phoneonly" ><a></a></li>
-        {{ end }}
-    </ul>
-</nav>
+            {{ if not $selectedExists }}
+                <li class="selected phoneonly" ><a></a></li>
+            {{ end }}
+        </ul>
+    </nav>
+{{ end }}
 
 {{ if and (not $currentPage.IsHome ) (not $currentPage.Params.hideHeaderTitle ) }}
     {{ $homePage := .Site.Home }}
