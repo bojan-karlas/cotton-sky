@@ -2,7 +2,8 @@
 
 <meta name="description" content="{{ with .Summary }}{{ . | plainify }}{{ else }}{{if .IsPage}}{{ .Summary | plainify }}{{ else }}{{ with .Site.Params.summary }}{{ . | plainify }}{{ end }}{{ end }}{{ end }}" />
 
-<meta property="og:title" content="{{ .Title }}" />
+{{ $title := cond .IsHome .Site.Title (print .Title " | " .Site.Title) }}
+<meta property="og:title" content="{{ $title }}" />
 <meta property="og:description" content="{{ with .Summary }}{{ . | plainify }}{{ else }}{{if .IsPage}}{{ .Summary | plainify }}{{ else }}{{ with .Site.Params.summary }}{{ . | plainify }}{{ end }}{{ end }}{{ end }}" />
 <meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}" />
 <meta property="og:url" content="{{ .Permalink }}" />
