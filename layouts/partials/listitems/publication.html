@@ -72,6 +72,7 @@
     
     {{ delimit $content.authors ", <wbr>"  | safeHTML }}<br>
 
+    {{ with $content.venueLong }}
     <em>
         {{ if not $params.hideVenueTag }}
             {{ $shorthand := delimit (slice $content.venueShort $content.venueTrack) " " }}
@@ -79,11 +80,12 @@
         {{ end }}
 
         {{ if $params.showYearAfterVenue }}
-            {{ $content.venueLong }}, {{ $content.year }}
+            {{ . }}, {{ $content.year }}
         {{ else }}
-            {{ $content.venueLong }}
+            {{ . }}
         {{ end }}
     </em>
+    {{ end }}
 
     {{ with $content.abstract }}
         <details>
