@@ -27,6 +27,7 @@
 
 {{ if and (not $currentPage.IsHome ) (not $currentPage.Params.hideHeaderTitle ) }}
     {{ $homePage := .Site.Home }}
+    {{ $headerTitle := .Site.Params.headerTitle }}
     <div>
         {{ with .Site.Params.logo }}
             {{- $img := $homePage.Resources.GetMatch . -}}
@@ -35,17 +36,19 @@
             {{- end -}}
 
             {{- if $img -}}
-                {{- $resizedImg := $img.Fit "48x48" -}}
-                {{- $resizedImgWebp := $img.Fit "48x48 webp picture" -}}
-                <picture>
-                    <source srcset="{{ $resizedImgWebp.Permalink }}" type="image/webp" />
-                    <img src="{{ $resizedImg.Permalink }}" loading="lazy" decoding="async">
-                </picture>
+                {{- $resizedImg := $img.Resize "x80" -}}
+                {{- $resizedImgWebp := $img.Resize "x80 webp" -}}
+                <a href="{{ $homePage.RelPermalink }}" aria-label="Home">
+                    <picture>
+                        <source srcset="{{ $resizedImgWebp.Permalink }}" type="image/webp" />
+                        <img src="{{ $resizedImg.Permalink }}" alt="{{ $headerTitle }}" loading="lazy" decoding="async">
+                    </picture>
+                </a>
             {{- end -}}
         {{ end }}
 
-        {{ with $homePage.Params.title }}
-            <span>{{ . }}</span>
+        {{ with $headerTitle }}
+            <span><a href="{{ $homePage.RelPermalink }}">{{ . }}</a></span>
         {{ end }}
     </div>
 {{ end }}

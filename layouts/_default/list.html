@@ -13,33 +13,7 @@
 
             {{ with .title }}<h2>{{.}}</h2>{{ end }}
 
-            {{ $content := $page }}
-            {{ with .content }}
-                {{ with .page }}
-                    {{ $content = $page.GetPage . }}
-                {{ end }}
-                {{ with .data }}
-                    {{ $data := $content.Resources.GetMatch . }}
-                    {{ if $data }}
-                        {{ $content = $data | transform.Unmarshal }}
-                    {{ else }}
-                        {{ $content = $.Site.Data }}
-                        {{ $path := split . "/" }}
-                        {{ range $path }}{{ $content = index $content . }}{{ end }}
-                    {{ end }}
-                {{ end }}
-                {{ with .param }}
-                    {{ if eq . "pages" }}
-                        {{ $content = $content.Pages }}
-                    {{ else }}
-                        {{ $content = $content.Param . }}
-                    {{ end }}
-                {{ end }}
-                {{ with .field }}{{ $content = index $content . }}{{ end }}
-                {{ with .where }}
-                    {{ $content = where $content .key .operator .match }}
-                {{ end }}
-            {{ end }}
+            {{ $content := partial "utils/resolve.html" (dict "spec" .content "page" $page) }}
 
             {{ $params := dict }}
             {{ with .params }}{{ $params = . }}{{ end }}

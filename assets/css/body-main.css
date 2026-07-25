@@ -25,6 +25,16 @@ body main section div {
     width: 100%;
 }
 
+body main .title-link {
+    color: inherit;
+    text-decoration: none;
+}
+
+body main .title-link:hover {
+    color: var(--color-primary);
+    text-decoration: none;
+}
+
 @media screen and (max-width: 1250px) {
 
     body>main {

@@ -20,5 +20,11 @@
         <footer>
             {{- partial "elements/footer.html" . -}}
         </footer>
+
+        {{- if ne .Site.Params.showFab false }}
+        <div class="toc-fab">
+            <nav class="toc-fab-list" aria-label="On this page"></nav>
+        </div>
+        {{- end }}
     </body>
 </html>

@@ -43,12 +43,18 @@
         {{ if (ne $img nil) }}
             {{ $resizedImg := $img.Fit "250x250" }}
             <aside>
+                {{ if $permalink }}<a href="{{ $permalink }}">{{ end }}
                 <img src="{{ $resizedImg.Permalink }}" alt="">
+                {{ if $permalink }}</a>{{ end }}
             </aside>
         {{ end }}
     {{ end }}
 
-    <b>{{ $content.title }}</b>
+    {{ if $permalink }}
+        <a class="title-link" href="{{ $permalink }}"><b>{{ $content.title }}</b></a>
+    {{ else }}
+        <b>{{ $content.title }}</b>
+    {{ end }}
     {{with $content.summary }}<em><br>{{ . }}<br></em>{{ end }}
     <nav class="noprint">
         <ul>

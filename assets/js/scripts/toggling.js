@@ -39,7 +39,18 @@ document.addEventListener("DOMContentLoaded", function(event) {
   var menuLiElements = menuUlElement.querySelectorAll("li");
 
   var dropDownEventListener = function(event) {
-    toggleClass("body>header>nav ul", 'dropdown-open');
+    // On wider screens the menu is not collapsed, so clicking the currently
+    // selected item should navigate to its link as usual.
+    if (!window.matchMedia("(max-width: 750px)").matches) {
+      return;
+    }
+    // On mobile, if the menu is already expanded, a second tap on the selected
+    // item should follow its link (e.g. go to the section landing page).
+    if (menuUlElement.classList.contains("dropdown-open")) {
+      return;
+    }
+    // Otherwise the menu is collapsed, so expand it instead of navigating.
+    menuUlElement.classList.add("dropdown-open");
     event.stopPropagation();
     event.preventDefault();
   }

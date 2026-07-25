@@ -9,7 +9,12 @@ nav ul li {
 }
 
 nav ul li.btn-share-link {
-    transition-duration: 0.5s;
+    padding-right: 0.15em;
+    transition: transform 0.5s, max-width 0.5s, margin 0.5s, order 0s;
+}
+
+nav ul li.btn-share-link.hidden {
+    transition: none;
 }
 
 nav q {
@@ -23,13 +28,13 @@ nav q::after, nav q::before {
     content: "";
 }
 
-header nav a:hover {
-    color: var(--color-primary);
-}
-
-main nav a:hover {
+nav a:hover {
     color: var(--color-primary);
     text-decoration: none;
+}
+
+header nav a:hover {
+    color: var(--color-primary);
 }
 
 main nav ul {
@@ -43,6 +48,11 @@ main nav ul {
 
 main nav ul>li:first-child {
     margin-left: 0em;
+}
+
+main nav a:hover {
+    color: var(--color-primary);
+    text-decoration: none;
 }
 
 aside nav {

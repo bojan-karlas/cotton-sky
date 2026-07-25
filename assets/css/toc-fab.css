@@ -1,0 +1,146 @@
+/* Floating table-of-contents button (FAB) for narrow / mobile viewports.
+   On desktop it is hidden and the sticky aside TOC is used instead.
+
+   Collapsed, it is a rounded pill showing the current top-level heading (with a
+   three-bar menu glyph). Tapping it unfolds a rounded menu of all top-level
+   headings, anchored to the bottom-right corner and growing upward. */
+
+.toc-fab {
+    display: none;
+}
+
+@media screen and (max-width: 1250px) {
+
+    .toc-fab {
+        display: none;
+        justify-content: flex-end;
+        position: fixed;
+        right: 1em;
+        bottom: 1em;
+        z-index: 100;
+        max-width: calc(100vw - 2em);
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Revealed by JS only once the menu has been built and a caption is ready,
+       so it never flashes as an empty pill while the page loads. Pages with no
+       headings never become ready, so the FAB stays hidden there. */
+    .toc-fab.toc-ready {
+        display: flex;
+    }
+
+    .toc-fab-list {
+        width: fit-content;
+        max-width: min(90vw, 28em);
+        max-height: 50vh;
+        overflow-y: auto;
+        padding: 0.5rem 0.9rem;
+        font-size: 1.2rem;
+        color: var(--color-background);
+        background-color: var(--color-foreground);
+        border: 1px solid var(--color-foreground);
+        border-radius: 1em;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Collapsed, the pill is a constant width (rather than sizing to whichever
+       heading is active), so it does not jump around while scrolling. Open, it
+       reverts to fit-content so the full menu sizes to its items. overflow is
+       hidden so the fixed width never produces a horizontal scrollbar. */
+    .toc-fab:not(.toc-open) .toc-fab-list {
+        width: min(75vw, 22em);
+        overflow: hidden;
+    }
+
+    .toc-fab-list ul {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        row-gap: 0.5em;
+        text-align: right;
+        transition: row-gap 0.5s cubic-bezier(0, 1, 0, 1);
+    }
+
+    .toc-fab:not(.toc-open) .toc-fab-list ul {
+        row-gap: 0;
+    }
+
+    .toc-fab-list li {
+        min-width: 0;
+        max-width: 100%;
+        overflow: hidden;
+    }
+
+    /* Non-active items expand/collapse; the active item is always visible.
+       The open cap is a small overshoot so the collapse eases fast-then-slow,
+       matching the main navigation menu. */
+    .toc-fab.toc-open li:not(.is-active) {
+        max-height: 2.5em;
+        transition: max-height 0.5s cubic-bezier(0, 1, 0, 1);
+    }
+
+    .toc-fab:not(.toc-open) li:not(.is-active) {
+        max-height: 0;
+        transition: max-height 0.5s cubic-bezier(0, 1, 0, 1);
+    }
+
+    .toc-fab-list a {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        position: relative;
+        min-width: 0;
+        max-width: 100%;
+        padding-right: 1.5em;
+        color: var(--color-background);
+        text-decoration: none;
+    }
+
+    /* Neutralise the theme's global `nav a:hover` tint for FAB items; on
+       touch devices that sticky hover would otherwise persist after a tap.
+       The open-menu tint below re-applies it only where hover is real. */
+    .toc-fab-list a:hover {
+        color: var(--color-background);
+    }
+
+    /* The current heading is always bold with the menu glyph beside it. */
+    .toc-fab-list li.is-active > a {
+        font-weight: bold;
+    }
+
+    /* The glyph sits in the reserved right-hand padding, so every item's text
+       shares the same right edge whether or not it carries the glyph. */
+    .toc-fab-list li.is-active > a::after {
+        content: "≡";
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 1em;
+        line-height: 1;
+    }
+
+    /* Resting caption: clip the current heading to one line. The pill width is
+       fixed above, so the caption fills the available space (flex + min-width:0)
+       and ellipsises when it is too long. */
+    .toc-fab:not(.toc-open) li.is-active > a > span {
+        flex: 1;
+        min-width: 0;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+}
+
+/* Hover tint only where the device can truly hover, and only while the menu is
+   open, so a clicked item reverts to its normal colour once the menu closes. */
+@media screen and (max-width: 1250px) and (hover: hover) {
+    .toc-fab.toc-open .toc-fab-list a:hover {
+        color: var(--color-primary);
+    }
+}

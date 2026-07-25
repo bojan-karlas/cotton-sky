@@ -1,0 +1,68 @@
+{{- /*
+    Resolves a content collection from a spec dict.
+
+    Params:
+        spec  - the resolver spec (see operators below); may be nil/empty
+        page  - the base page used as the starting context
+
+    Spec operators (all optional, applied in order):
+        page   - path to another page, used as the base context
+        data   - page resource or site data file to unmarshal
+        names  - ordered list of page base filenames, resolved relative to the
+                 current base; preserves the given order
+        param  - read a param ("pages" -> .Pages)
+        field  - index into the current value
+        where  - filter with { key, operator, match }
+
+    Returns the resolved content (a page collection, data value, etc.).
+*/ -}}
+
+{{- $page := .page -}}
+{{- $spec := .spec -}}
+{{- $content := $page -}}
+
+{{- with $spec -}}
+
+    {{- with .page -}}
+        {{- $content = $page.GetPage . -}}
+    {{- end -}}
+
+    {{- with .data -}}
+        {{- $data := $content.Resources.GetMatch . -}}
+        {{- if $data -}}
+            {{- $content = $data | transform.Unmarshal -}}
+        {{- else -}}
+            {{- $content = site.Data -}}
+            {{- $path := split . "/" -}}
+            {{- range $path -}}{{- $content = index $content . -}}{{- end -}}
+        {{- end -}}
+    {{- end -}}
+
+    {{- with .names -}}
+        {{- $base := $content -}}
+        {{- $pages := slice -}}
+        {{- range . -}}
+            {{- with $base.GetPage . -}}
+                {{- $pages = $pages | append . -}}
+            {{- end -}}
+        {{- end -}}
+        {{- $content = $pages -}}
+    {{- end -}}
+
+    {{- with .param -}}
+        {{- if eq . "pages" -}}
+            {{- $content = $content.Pages -}}
+        {{- else -}}
+            {{- $content = $content.Param . -}}
+        {{- end -}}
+    {{- end -}}
+
+    {{- with .field -}}{{- $content = index $content . -}}{{- end -}}
+
+    {{- with .where -}}
+        {{- $content = where $content .key .operator .match -}}
+    {{- end -}}
+
+{{- end -}}
+
+{{- return $content -}}

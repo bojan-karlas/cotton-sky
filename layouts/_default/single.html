@@ -1,6 +1,16 @@
 {{ define "main" }}
     {{ .Content }}
 
+    {{ with .Params.authors }}
+        {{ $authors := partial "utils/resolve.html" (dict "spec" . "page" $) }}
+        {{ if $authors }}
+            <section>
+                <h2>Authors</h2>
+                {{ partial "sections/list" (dict "content" $authors "params" (dict "preventTitleLinks" true "small" false)) }}
+            </section>
+        {{ end }}
+    {{ end }}
+
     {{ if isset .Params "recommended" }}
         <h2>Recommended</h2>
         {{ $pages := slice }}

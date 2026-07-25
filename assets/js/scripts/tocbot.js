@@ -19,6 +19,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     makeIds();
 
     let headingSelector = "h2, h3, h4";
+    // let headingSelector = "h2";
     {{ with $.Site.Params.tocHeadingSelector }} headingSelector = "{{ . }}"{{ end }}
 
     tocbot.init({
