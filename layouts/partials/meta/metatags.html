@@ -25,6 +25,13 @@
   {{ $previewImage = cond (ne $previewImage nil) $previewImage (resources.Get $previewImagePath) }}
 {{ end }}
 
+{{/* Site-wide default social image when the page defines no thumbnail. */}}
+{{ if (or (eq $previewImage nil) (eq $previewImage "")) }}
+  {{ with .Site.Params.defaultThumbnail }}
+    {{ $previewImage = resources.Get . }}
+  {{ end }}
+{{ end }}
+
 {{ if (and (ne $previewImage nil) (ne $previewImage "")) }}
   <meta property="og:image" content="{{ $previewImage.Permalink }}" />
 {{ end }}

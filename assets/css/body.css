@@ -10,6 +10,7 @@ body {
     margin: 0;
     font-size: 1.2rem;
     min-height: 100vh;
+    overscroll-behavior: none;
 }
 
 nav ul {

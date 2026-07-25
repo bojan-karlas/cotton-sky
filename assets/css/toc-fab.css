@@ -32,7 +32,7 @@
 
     .toc-fab-list {
         width: fit-content;
-        max-width: min(90vw, 28em);
+        max-width: min(60vw, 28em);
         max-height: 50vh;
         overflow-y: auto;
         padding: 0.5rem 0.9rem;
@@ -41,7 +41,7 @@
         background-color: var(--color-foreground);
         border: 1px solid var(--color-foreground);
         border-radius: 1em;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 2px 8px var(--color-shadow);
     }
 
     /* Collapsed, the pill is a constant width (rather than sizing to whichever
@@ -49,7 +49,7 @@
        reverts to fit-content so the full menu sizes to its items. overflow is
        hidden so the fixed width never produces a horizontal scrollbar. */
     .toc-fab:not(.toc-open) .toc-fab-list {
-        width: min(75vw, 22em);
+        width: min(60vw, 22em);
         overflow: hidden;
     }
 
@@ -60,7 +60,7 @@
         list-style: none;
         margin: 0;
         padding: 0;
-        row-gap: 0.5em;
+        row-gap: 0.8em;
         text-align: right;
         transition: row-gap 0.5s cubic-bezier(0, 1, 0, 1);
     }
@@ -77,9 +77,10 @@
 
     /* Non-active items expand/collapse; the active item is always visible.
        The open cap is a small overshoot so the collapse eases fast-then-slow,
-       matching the main navigation menu. */
+       matching the main navigation menu. It fits a two-line heading so wrapped
+       captions are not clipped at the bottom. */
     .toc-fab.toc-open li:not(.is-active) {
-        max-height: 2.5em;
+        max-height: 3.5em;
         transition: max-height 0.5s cubic-bezier(0, 1, 0, 1);
     }
 
@@ -95,7 +96,10 @@
         position: relative;
         min-width: 0;
         max-width: 100%;
-        padding-right: 1.5em;
+        padding-right: 1.3em;
+        /* Tighten spacing between wrapped lines so it reads as tighter than the
+           row-gap between separate captions, making the grouping unambiguous. */
+        line-height: 1.2;
         color: var(--color-background);
         text-decoration: none;
     }

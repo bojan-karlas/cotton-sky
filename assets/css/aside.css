@@ -21,7 +21,14 @@ aside.right {
 
 aside.right * {
     text-align: left;
-    width: 200px;
+}
+
+aside.right > nav {
+    width: 260px;
+}
+
+aside.right nav * {
+    max-width: 100%;
 }
 
 aside.sticky {
@@ -87,6 +94,10 @@ aside figure {
     aside img {
         max-height: 250px;
         max-width: 300px;
+    }
+
+    header aside img {
+        max-height: 150px;
     }
 
     aside.large img, aside figure img {

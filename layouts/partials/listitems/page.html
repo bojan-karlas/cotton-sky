@@ -55,6 +55,16 @@
     {{ else }}
         <b>{{ $content.title }}</b>
     {{ end }}
+    {{ if $typeIsPage }}
+        {{ with $content.authors }}
+            {{ $authorPages := partial "utils/resolve.html" (dict "spec" . "page" $value) }}
+            {{ if $authorPages }}
+                {{ $names := slice }}
+                {{ range $authorPages }}{{ $names = $names | append .Title }}{{ end }}
+                <br>{{ delimit $names ", <wbr>" | safeHTML }}
+            {{ end }}
+        {{ end }}
+    {{ end }}
     {{with $content.summary }}<em><br>{{ . }}<br></em>{{ end }}
     <nav class="noprint">
         <ul>

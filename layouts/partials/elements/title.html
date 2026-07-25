@@ -59,7 +59,7 @@
 
                 <a
                     {{ if not $link.obfuscate }}href="{{ $link.href }}"{{ end }}
-                    {{ with $link.title }}title="{{ . }}"{{ end }}
+                    {{ if and $link.title (not $link.label) }}title="{{ $link.title }}"{{ end }}
                     {{ if $link.newtab }}target="_blank"{{ end }}
                     {{ if $link.obfuscate }}href-encoded="{{ $link.href | base64Encode }}"{{ end }}
                 >
@@ -78,9 +78,12 @@
             {{ if $shareable }}
 
                 <li>
-                    <a title="Share" onclick="shareOrToggleHidden('.btn-share-link', '{{ .Title }}', '{{ .Permalink | absURL }}')" onblur="ensureHasClass('.btn-share-link', 'hidden')">
-                        <em><i class="fas fa-share-square"></i></em>
+                    <em>
+                    <a onclick="shareOrToggleHidden('.btn-share-link', '{{ .Title }}', '{{ .Permalink | absURL }}')" onblur="ensureHasClass('.btn-share-link', 'hidden')">
+                        <i class="fas fa-share-square"></i>
+                        <span>Share</span>
                     </a>
+                    </em>
                 </li>
 
                 <li class="btn-share-link hidden">
