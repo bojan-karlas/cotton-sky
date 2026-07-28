@@ -13,6 +13,22 @@ body {
     overscroll-behavior: none;
 }
 
+@keyframes cite-target-fade {
+    0%, 40% {
+        background-color: color-mix(in srgb, var(--color-primary) 18%, transparent);
+    }
+    100% {
+        background-color: transparent;
+    }
+}
+
+span:target {
+    border-radius: 0.2em;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+    animation: cite-target-fade 3s ease forwards;
+}
+
 nav ul {
     list-style: none;
 }
@@ -140,11 +156,17 @@ img {
 }
 
 figure {
-    margin: 0;
+    margin: 0 auto;
+}
+
+figure > picture,
+figure > img {
+    display: block;
+    margin-inline: auto;
 }
 
 figcaption {
-    margin-top: -0.5em;
+    margin-top: 0;
 }
 
 figcaption * {

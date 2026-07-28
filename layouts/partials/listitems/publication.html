@@ -48,24 +48,21 @@
     {{ end }}
     
     {{ if $params.showShortref }}
-        {{ $firstAuthor := index $content.authors 0 }}
-        {{ $firstAuthorNames := split $firstAuthor " " }}
-        {{ $authorNames := index $firstAuthorNames (sub (len $firstAuthorNames) 1) }}
-        {{ $authorNamesLink := $authorNames }}
-        {{ if gt (len $content.authors) 1 }}
-            {{ if gt (len $content.authors) 2 }}
-                {{ $authorNames = printf "%s et al." $authorNames }}
-            {{ else }}
-                {{ $secondAuthor := index $content.authors 1 }}
-                {{ $secondAuthorNames := split $secondAuthor " " }}
-                {{ $secondAuthorLastName := index $secondAuthorNames (sub (len $secondAuthorNames) 1) }}
-                {{ $authorNames = printf "%s and %s" $authorNames $secondAuthorLastName }}
-                {{ $authorNamesLink = replace $authorNames " " "-" }}
-            {{ end }}
+        {{ $firstParts := split (index $content.authors 0) " " }}
+        {{ $last := index $firstParts (sub (len $firstParts) 1) }}
+        {{ $author := $last }}
+        {{ if gt (len $content.authors) 2 }}
+            {{ $author = printf "%s et al." $last }}
+        {{ else if eq (len $content.authors) 2 }}
+            {{ $secondParts := split (index $content.authors 1) " " }}
+            {{ $secondLast := index $secondParts (sub (len $secondParts) 1) }}
+            {{ $author = printf "%s and %s" $last $secondLast }}
         {{ end }}
-        {{ $shortRef := printf "%s, %s %d" $authorNames $content.venueShort $content.year }}
-        {{ $shortRefLink := delimit (slice $authorNamesLink $content.venueShort $content.year) "-" }}
-        (<a href="#{{ $shortRefLink }}"><span id="{{ $shortRefLink }}">{{ $shortRef }}</span></a>)<br>
+        {{ $key := printf "%s%v" (lower $last) $content.year }}
+        {{ $suffix := "" }}
+        {{ with $content.citeSuffix }}{{ $suffix = . }}{{ end }}
+        {{ $citeId := printf "%s%s" $key $suffix }}
+        (<a href="#{{ $citeId }}"><span id="{{ $citeId }}">{{ $author }}, {{ $content.year }}{{ $suffix }}</span></a>)<br>
     {{ end }}
 
     <b>{{ $content.title }}</b><br>

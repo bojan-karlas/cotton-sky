@@ -22,6 +22,9 @@ window.addEventListener("load", function () {
         var li = document.createElement("li");
         var a = document.createElement("a");
         a.href = link.getAttribute("href");
+        // Remember tocbot's real TOC link so a FAB tap can delegate to it and
+        // reuse tocbot's smooth-scroll animation.
+        a.tocLink = link;
         var span = document.createElement("span");
         span.textContent = link.textContent;
         a.appendChild(span);
@@ -74,6 +77,13 @@ window.addEventListener("load", function () {
             event.preventDefault();
         } else if (event.target.closest("a")) {
             fab.classList.remove("toc-open");
+            var itemAnchor = event.target.closest("a");
+            if (itemAnchor.tocLink) {
+                // Delegate to tocbot's real link so the jump animates the same
+                // way as the desktop TOC instead of doing an instant jump.
+                event.preventDefault();
+                itemAnchor.tocLink.click();
+            }
         }
         event.stopPropagation();
     });

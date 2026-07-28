@@ -1,0 +1,3 @@
+{{- /* In-page anchor links get "toc-link-cite" so tocbot smooth-scrolls them. */ -}}
+<a href="{{ .Destination | safeURL }}"{{ with .Title }} title="{{ . }}"{{ end }}{{ if strings.HasPrefix .Destination "#" }} class="toc-link-cite"{{ end }}>{{ .Text | safeHTML }}</a>
+{{- /**/ -}}

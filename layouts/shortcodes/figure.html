@@ -11,6 +11,9 @@
         {{ $src := .Get "src" }}
         {{ $alt := .Get "alt" }}
         {{ $size := .Get "size" }}
+        {{ $isSVG := eq (lower (path.Ext $src)) ".svg" }}
+        {{ $imgStyle := "" }}
+        {{ with .Get "width" }}{{ $imgStyle = printf "width: %s; max-width: 100%%;" . }}{{ end }}
 
         {{ $img := resources.Get $src }}
         {{- if not $img -}}
@@ -20,7 +23,16 @@
             {{- $img = .Page.Resources.GetMatch $src -}}
         {{- end -}}
 
-        {{ with $img }}
+        {{ if $isSVG }}
+
+            {{/* SVG is a vector format and cannot go through Hugo's raster
+                 resize pipeline, so emit it directly. */}}
+            {{ $svgURL := $src }}
+            {{ with $img }}{{ $svgURL = .RelPermalink }}{{ end }}
+            <img src="{{ $svgURL | safeURL }}" alt="{{ $alt }}"{{ with $imgStyle }} style="{{ . | safeCSS }}"{{ end }} loading="lazy" decoding="async">
+
+        {{ else }}
+            {{ with $img }}
 
             {{ if (not $size) }}
                 {{ $size = printf "%dx%d" .Width .Height }}
@@ -29,11 +41,12 @@
             {{ $resizedImg := printf "%s" $size | .Resize }}
             {{ $resizedImgWebp := printf "%s webp picture" $size | .Resize }}
 
-            <picture>
+            <picture{{ with $imgStyle }} style="{{ . | safeCSS }}"{{ end }}>
                 <source srcset="{{ $resizedImgWebp.Permalink }}" type="image/webp" />
-                <img src="{{ $resizedImg.Permalink }}" alt="{{ $alt }}" loading="lazy" decoding="async">
+                <img src="{{ $resizedImg.Permalink }}" alt="{{ $alt }}"{{ with $imgStyle }} style="{{ . | safeCSS }}"{{ end }} loading="lazy" decoding="async">
             </picture>
 
+            {{ end }}
         {{ end }}
         <figcaption>
             {{ with .Get "icon" }}

@@ -1,6 +1,16 @@
 {{ define "main" }}
     {{ .Content }}
 
+    {{ with .Params.references }}
+        {{ $references := partial "utils/resolve.html" (dict "spec" . "page" $) }}
+        {{ if $references }}
+            <section>
+                <h2>References</h2>
+                {{ partial "sections/list" (dict "content" $references "params" (dict "showShortref" true "hideVenueTag" true "showYearAfterVenue" true)) }}
+            </section>
+        {{ end }}
+    {{ end }}
+
     {{ with .Params.authors }}
         {{ $authors := partial "utils/resolve.html" (dict "spec" . "page" $) }}
         {{ if $authors }}
