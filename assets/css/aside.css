@@ -41,6 +41,23 @@ header aside img {
     max-width: 250px;
 }
 
+header > div {
+    position: relative;
+}
+
+@media screen and (min-width: 1001px) {
+    header > div > aside {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        height: max-content;
+        margin: auto 0;
+        right: calc(100% + 2em);
+        float: none;
+        width: auto;
+    }
+}
+
 aside img {
     max-height: 150px;
     max-width: 200px;

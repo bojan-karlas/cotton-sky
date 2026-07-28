@@ -1,5 +1,7 @@
 <header>
 
+    <div>
+
     {{ if isset .Params "thumbnail" }}
         {{- $img := .Resources.GetMatch .Params.thumbnail -}}
         {{- if not $img -}}
@@ -19,7 +21,7 @@
                 
                 <picture>
                     <source srcset="{{ $resizedImgWebp.Permalink }}" type="image/webp" />
-                    <img src="{{ $resizedImg.Permalink }}" alt="{{ .Params.thumbnailAlt }}" loading="lazy" decoding="async">
+                    <img src="{{ $resizedImg.Permalink }}" alt="{{ .Params.thumbnailAlt }}" loading="eager" decoding="async">
                 </picture>
 
                 {{ if .Params.thumbnailClickable }}
@@ -37,6 +39,8 @@
         <wbr /><sub>/ {{ .Params.subtitle | .Page.RenderString }}</sub>
         {{ end }}
     </h1>
+
+    </div>
 
     {{ if isset .Params "summary" }}
         <blockquote>
