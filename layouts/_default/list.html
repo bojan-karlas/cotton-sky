@@ -13,15 +13,15 @@
 
             {{ with .title }}<h2>{{.}}</h2>{{ end }}
 
+            {{ with .header }}{{ $page.RenderString (dict "display" "block") . }}{{ end }}
+
             {{ $content := partial "utils/resolve.html" (dict "spec" .content "page" $page) }}
 
             {{ $params := dict }}
             {{ with .params }}{{ $params = . }}{{ end }}
 
-            {{ if isset . "partial" }}
-                {{ partial (printf "sections/%s" .partial) ( dict "content" $content "params" $params ) }}
-            {{ else }}
-                {{ ( dict "content" $content "params" $params ) }}
+            {{ with .partial }}
+                {{ partial (printf "sections/%s" .) ( dict "content" $content "params" $params ) }}
             {{ end }}
         </section>
     {{ end }}
