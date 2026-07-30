@@ -9,18 +9,60 @@
     display: none;
 }
 
+.fab-stack {
+    display: none;
+}
+
 @media screen and (max-width: 1250px) {
 
-    .toc-fab {
-        display: none;
-        justify-content: flex-end;
+    /* The FAB and the scroll-to-top button share one fixed, bottom-right stack.
+       The arrow sits to the left of the FAB, bottom-aligned so it stays beside
+       the resting pill even as the FAB menu expands upward. */
+    .fab-stack {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+        gap: 0.6em;
         position: fixed;
         right: 1em;
         bottom: 1em;
         z-index: 100;
         max-width: calc(100vw - 2em);
+    }
+
+    .toc-fab {
+        display: none;
+        justify-content: flex-end;
         cursor: pointer;
         -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Scroll-to-top button: reuses the FAB pill's colours as a compact round
+       button. Hidden by default and zoomed in only after scrolling down, using
+       the same easing curve as the menu expand/collapse. */
+    .scroll-top {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2em;
+        height: 2em;
+        padding: 0;
+        font-size: 1.2rem;
+        color: var(--color-background);
+        background-color: var(--color-foreground);
+        border: 1px solid var(--color-foreground);
+        border-radius: 50%;
+        box-shadow: 0 2px 8px var(--color-shadow);
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+        transform: scale(0);
+        pointer-events: none;
+        transition: transform 0.5s cubic-bezier(0, 1, 0, 1);
+    }
+
+    .scroll-top.visible {
+        transform: scale(1);
+        pointer-events: auto;
     }
 
     /* Revealed by JS only once the menu has been built and a caption is ready,

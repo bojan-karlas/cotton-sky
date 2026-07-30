@@ -22,8 +22,13 @@
         </footer>
 
         {{- if ne .Site.Params.showFab false }}
-        <div class="toc-fab">
-            <nav class="toc-fab-list" aria-label="On this page"></nav>
+        <div class="fab-stack">
+            <button type="button" class="scroll-top" aria-label="Scroll to top" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">
+                <i class="fa-solid fa-arrow-up"></i>
+            </button>
+            <div class="toc-fab">
+                <nav class="toc-fab-list" aria-label="On this page"></nav>
+            </div>
         </div>
         {{- end }}
     </body>
