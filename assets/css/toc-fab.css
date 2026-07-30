@@ -31,8 +31,9 @@
     }
 
     .toc-fab-list {
-        width: fit-content;
-        max-width: min(60vw, 28em);
+        --fab-width: min(60vw, 22em);
+        width: var(--fab-width);
+        max-width: var(--fab-width);
         max-height: 50vh;
         overflow-y: auto;
         padding: 0.5rem 0.9rem;
@@ -44,12 +45,11 @@
         box-shadow: 0 2px 8px var(--color-shadow);
     }
 
-    /* Collapsed, the pill is a constant width (rather than sizing to whichever
-       heading is active), so it does not jump around while scrolling. Open, it
-       reverts to fit-content so the full menu sizes to its items. overflow is
-       hidden so the fixed width never produces a horizontal scrollbar. */
+    /* The pill is a constant width in both states (set on .toc-fab-list above),
+       so opening/closing only expands vertically and never shifts the left edge
+       or sizes to the active heading. At rest, overflow is hidden so the fixed
+       width never produces a horizontal scrollbar. */
     .toc-fab:not(.toc-open) .toc-fab-list {
-        width: min(60vw, 22em);
         overflow: hidden;
     }
 
